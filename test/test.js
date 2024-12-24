@@ -265,13 +265,143 @@ for (let k in user3) {
     console.log('user3[k]', user3[k])
 }
 
+// через in можно узнать о наличии свойства в объекте. Проверяет наличие ключа в нашем объекте.
+let obj1 = {
+    a: 0,
+}
+console.log('obj1', obj1)
 
-// 49:28
+if (obj1.a) {
+    console.log('#1', 'object not empty') // не увидим, так идет проверка значения свойства, есть оно или нет. Ноль при преобразовании к логическому будет выдавать false.
+}
+
+if ('a' in obj1) { //Проверяет наличие ключа в нашем объекте.
+    console.log('#2', 'object not empty')
+}
 
 
+//передача по ссылки и примитивы
+let a1 = 1;
+let a2 = 1;
+console.log('a1 === a2:', a1 === a2)
+
+let o1 = {a: 1};
+let o2 = {a: 1};
+let o3 = o1;
 
 
+console.log('o1 === o2:', o1 === o2)//false
+//Всегда будет false. Когда в переменную записываем какой-то объект, не примитив (все что не является объектом - это примитив), то в эту переменную подставляется ссылка на этот объект, которая хранится в памяти.
+//Объекты не копируются по значению, потому что объект может занимать очень много памяти, его размер JS изначально не известен, поэтмоу он просто храниться где то в памяти, а ссылка на него передается в нашу переменную.
+//И когда мы создаем еще один объект(например o2), то на самом деле мы создаем новый объект и ссылка на него так же копируется в переменную o2.
+//в o1 и o2 хранятся две разные ссылки на два разных объекта.
+//это как два одинаковых телефона(модель, цвет, память), но физически это два разных телефона, тоже самое и с объектами.
+
+console.log('o3 === o1:', o3 === o1)//true, так как записали не новый объект, а ссылку на тот же самый объект
 
 
+//Копирование объекта
+let user5 = {
+    firstName: 'Maxim',
+    lastName: 'Galkin',
+}
 
+let user5Address = {
+    address: 'Lenina',
+    role: 'artist',
+}
+
+let newUser = {}
+
+Object.assign(user5, user5Address, {a: 1})
+console.log(user5) //{ firstName: 'Maxim', lastName: 'Galkin', address: 'Lenina' }
+
+Object.assign(newUser, user5, user5Address, {a: 1})
+console.log(newUser) //{ firstName: 'Maxim', lastName: 'Galkin', address: 'Lenina' }
+
+
+//опциональная цыпочка
+let user6 = {
+    firstName: 'Maxim',
+    lastName: 'Galkin',
+    address: {
+        street: 'Lenina',
+    }
+}
+let user7 = {
+    firstName: 'Filip',
+    lastName: 'Kirkorov',
+}
+
+console.log(user6.address.street)
+console.log(user7.address) // undefined
+//console.log(user7.address.street) // ошибка Cannot read properties of undefined (reading 'street'), потому что user7.address возвращает undefined, а потом у undefined пытаемся получить street
+console.log(user7.address?.street) //undefined, ошибки уже нет. Так как используем опциональный оператор чеин "?". Если есть address, то получим street, если нет, то undefined
+
+
+// ссылки
+
+let b1 = 1;
+let b2 = b1; //она скопировалась, это уже не ссылка на b1, это новая еденица, скопировалась и записалась. Это примитивы.
+b2 = 7;
+console.log('b1', b1)
+console.log('b2', b2)
+
+
+let b3 = {a: 1};
+let b4 = b3;
+b4.a = 7
+console.log('b3', b3) // b3 { a: 7 }
+console.log('b4', b4) //b4 { a: 7 }
+
+//тут уже свойство объекта b3 изменилось. в b4 хранится ссылка на объект b3. В b4.a = 7 Работаем с одним и тем же объектом.
+
+
+//Методы
+//Значением свойств могут являться функции
+//Метод - это когда свойством объекта является функция
+
+
+let user9 = {
+    firstName: 'Filip',
+    lastName: 'Kirkorov',
+    // fullName: function () {
+    // fullName() { // можем записать покороче, без слов : function
+    //     console.log('this:', this) // используем специальную переменную this, ее так же называют контекстом. Переменная this ссылается на объект, из которого эта функция(метод) была вызвана.
+    // console.log(user8.firstName + user8.lastName)
+    // console.log(this.firstName, this.lastName) // поэтому можем писать тут this.firstName + this.lastName
+    // }
+    fullName,
+}
+user9.fullName() //и теперь, даже если будет меняться user8 на user9, fullName будет выводиться
+
+//this ссылается на объект из которого вызвана функция(метод). this не постоянный, он динамический
+// А если сделаем так
+
+// let fullNameMethod = user9.fullName;
+// fullNameMethod() //типо тут undefined undefined. Метод fullNameMethod вызывается не из объекта, а просто сам по себе, из глобального контекста. В браузере это глобальный объект Window
+
+
+// создадим общую функцию для всех наших юзеров
+function fullName() {
+    console.log('общая функция для всех наших юзеров:', this.firstName, this.lastName)
+}
+
+let user10 = {
+    firstName: 'Maksim',
+    lastName: 'Galkin',
+    fullName,
+}
+
+user10.fullName()
+
+// у стрелочный функции нет контекста, this работать не будет
+// let fullName2 = () => {
+//     console.log('общая функция для всех наших юзеров:', this.firstName, this.lastName)
+// }
+
+
+console.log(Object.keys(user10))//можем пердать какой то объект и метод вернет массив, список ключей объекта
+console.log(Object.values(user10))//можем пердать какой то объект и метод вернет массив, список значений объекта
+console.log(Object.entries(user10))//можем пердать какой то объект и метод вернет массив массивов, и каждый вложеный массив это свойство и его значение
 

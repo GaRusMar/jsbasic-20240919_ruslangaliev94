@@ -505,15 +505,131 @@
 //
 //
 // // Return - возврат ( выход из функции )
-//
+
 // function sum() {
-//     return 123
-//     console.log(1 + 2)
+// console.log('sum:', 1 + 2)
+// return 1 + 2 //прерывает выполнение функции
 // }
-//
+
 // let sumResult = sum();
 // console.log('sumResult: ', sumResult)
-//
-// //18:10
-//
-// //Область видимости
+
+//любой код выполненный после return никогда не выполнится
+//по умолчанию функция возвращает undefined
+
+
+// хитрые вопросы для собеседования
+
+// function test() {
+//     return
+//     {
+//         a: 1
+//     }
+
+//     console.log('test:', 1 + 2);
+// }
+
+// let testResult = test();
+// console.log('testResult: ', testResult) //undefined хаахх так как у return скобочка на другой строке. Происходит просто выход из функции. Его можно писать без всего например: return;
+
+
+// Аргументы функции
+function sumNumbers(m, n) { //m, n - аргументы функции
+    return m + n
+}
+
+console.log(sumNumbers(2, 3)) //5
+console.log(sumNumbers(3))// NaN потому что 3 + undefined = NaN
+
+
+//порядок аргументов важен
+
+function showFulName(firstName, lastName) {
+    console.log(firstName, lastName)
+}
+
+showFulName('Киркоров', 'Филипп')//Киркоров Филипп
+showFulName('Киркоров')//Киркоров undefined
+
+//как избежать этих ошибок, если нет одного из параметров? Надо задать значения по умолчанию.
+
+//старый синтаксис
+function noError1(a, b) {
+    if (b === undefined) {
+        b = 0
+    }
+    return a + b;
+}
+
+console.log(noError1(5)) //5  так как 5 + 0 = 5
+
+//современный синтаксис
+function noError2(a, b = 0) {
+    return a + b;
+}
+
+console.log(noError2(5)) //5  так как 5 + 0 = 5
+
+//А что если мы пытаемся передать больше аргументов, чем есть в функкции?
+function noError3(a, b) {
+    // console.log('args:', arguments) // args: [Arguments] { '0': 3, '1': 2, '2': 4 }
+    console.log('args[2]:', arguments['2']) // args: 4
+    console.log('args.length:', arguments.length) // args: 4
+
+
+    let result = 0;
+
+    for (let i = 0; i < arguments.length; i++) {
+        let argNum = arguments[i]
+        result += argNum
+    }
+
+
+    return result;
+}
+
+console.log(noError3(3, 2, 4, 5, 6))
+
+
+//У стрелочных функций нет this и так же нет arguments!
+
+
+//Область видимости
+
+//функции доступны все внешние переменные за ее пределами
+let a = 1;
+
+function func1() {
+    console.log('a:', a)
+}
+
+func1()
+
+
+// //Ошибка, так как мы не можем залезть внутрь функции и прочитать ее переменную
+// function func2() {
+//     let b = 1;
+// }
+// console.log('b:', b) //ReferenceError: b is not defined
+
+
+//внутри функции можно объявлять другие функции
+//функция внутри функции видит все функции, которые есть выше
+
+let c = 1;
+
+function func3() {
+    console.log('с:', c)
+
+    let d = 2
+
+    let func4 = function () {
+        console.log('func4 c', c)
+        console.log('func4 d', d)
+    }
+
+    func4()
+
+}
+
+func3()

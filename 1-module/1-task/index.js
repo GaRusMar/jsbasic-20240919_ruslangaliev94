@@ -27,6 +27,9 @@ function factorial(n) {
 //     }
 //     let arrString =  arr.join(' * ')
 //     console.log(`${n} ! = ${arrString} * 1  = ${result}`)
+
+
+
 //     return result
 // }
 

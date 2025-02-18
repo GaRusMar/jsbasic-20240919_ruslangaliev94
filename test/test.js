@@ -533,228 +533,228 @@
 // console.log('testResult: ', testResult) //undefined хаахх так как у return скобочка на другой строке. Происходит просто выход из функции. Его можно писать без всего например: return;
 
 
-// Аргументы функции
-function sumNumbers(m, n) { //m, n - аргументы функции
-  return m + n;
-}
-
-console.log(sumNumbers(2, 3)); //5
-console.log(sumNumbers(3));// NaN потому что 3 + undefined = NaN
-
-
-//порядок аргументов важен
-
-function showFulName(firstName, lastName) {
-  console.log(firstName, lastName);
-}
-
-showFulName('Киркоров', 'Филипп');//Киркоров Филипп
-showFulName('Киркоров');//Киркоров undefined
-
-//как избежать этих ошибок, если нет одного из параметров? Надо задать значения по умолчанию.
-
-//старый синтаксис
-function noError1(a, b) {
-  if (b === undefined) {
-    b = 0;
-  }
-  return a + b;
-}
-
-console.log(noError1(5)); //5  так как 5 + 0 = 5
-
-//современный синтаксис
-function noError2(a, b = 0) {
-  return a + b;
-}
-
-console.log(noError2(5)); //5  так как 5 + 0 = 5
-
-//А что если мы пытаемся передать больше аргументов, чем есть в функкции?
-function noError3(a, b) {
-  // console.log('args:', arguments) // args: [Arguments] { '0': 3, '1': 2, '2': 4 }
-  console.log('args[2]:', arguments['2']); // args: 4
-  console.log('args.length:', arguments.length); // args: 4
-
-
-  let result = 0;
-
-  for (let i = 0; i < arguments.length; i++) {
-    let argNum = arguments[i];
-    result += argNum;
-  }
-
-
-  return result;
-}
-
-console.log(noError3(3, 2, 4, 5, 6));
-
-
-//У стрелочных функций нет this и так же нет arguments!
-
-
-//Область видимости
-
-//функции доступны все внешние переменные за ее пределами
-let a = 1;
-
-function func1() {
-  console.log('a:', a);
-}
-
-func1();
-
-
-// //Ошибка, так как мы не можем залезть внутрь функции и прочитать ее переменную
-// function func2() {
-//     let b = 1;
+// // Аргументы функции
+// function sumNumbers(m, n) { //m, n - аргументы функции
+//   return m + n;
 // }
-// console.log('b:', b) //ReferenceError: b is not defined
-
-
-//внутри функции можно объявлять другие функции
-//функция внутри функции видит все функции, которые есть выше
-
-let c = 1;
-
-function func3() {
-  console.log('с:', c);
-
-  let d = 2;
-
-  let func4 = function () {
-    console.log('func4 c', c);
-    console.log('func4 d', d);
-  };
-
-  func4();
-
-}
-
-func3();
-
-//функция является объектом, объекты разные поэтому false
-console.log((function () {
-}) === (function () {
-}));
-
-
-// массивы в js
-// Тип данных массива это объект
-// Создают через скобки
-
-let arr1 = [1, 2, 'test', {a: 3}];
-console.log(arr1);
-
-// в массиве храним коллекции данных
-
-// индексы это адреса элементов в массиве. В качестве ключа выступают индексы
-// начинается с 0
-
-console.log(arr1[0]);
-console.log(arr1[2]);
-
-let arr2 = [1, 2, 3, [4, 5], 6, 7];
-
-console.log(arr2[3][0]);//4
-
-//как найти элемент в массиве(метода массива)
-
-let arr3 = [1, 2, 'test', {a: 1}];
-console.log(arr3.includes('test'));//true
-console.log(arr3.indexOf('test'));//2
-// если элемент не найден то получаю - 1 если найден, то получаем index
-
-console.log(arr3.find((el) => {
-  return el === 'test';
-}));
-//возращает сам элемент массива
-
-
-let arr4 = [1, 2, 3];
-console.log(arr4.length);
-console.log(arr4);
-
-//push добавить новый элемент в массив
-arr4.push(4);
-
-console.log(arr4);
-
-//удаляем послдений элемент из массива с конца
-arr4.pop();
-console.log(arr4);
-
-
-//добавляем первый элемент из массива с конца
-arr4.unshift(0);
-console.log(arr4);
-
-//удаляем первый элемент из массива с конца
-arr4.shift();
-console.log(arr4);
-
-//почему в конец лучше добавлять? Потому что мы не хотим переиндексацию
-
-let arr5 = [1, 2, 3, 4, 5, 6];
-console.log(arr5.reverse());
-
-
-let users = [
-  {
-    firstName: 'Алла',
-    lastName: 'Пугачева',
-    gender: 'f'
-  },
-  {
-    firstName: 'Филипп',
-    lastName: 'Кирковров',
-    gender: 'm'
-  },
-  {
-    firstName: 'ольга',
-    lastName: 'бузова',
-    gender: 'f'
-  },
-  {
-    firstName: 'Максим',
-    lastName: 'Галкин',
-    gender: 'm'
-  },
-];
-
-
-// 1 способ
-let usersResult = [];
-for (let user of users) {
-  if (user.gender === 'f') {
-    usersResult.push(user.firstName + ' ' + user.lastName);
-  }
-}
-console.log(usersResult);
-
-// 2 способ
-//принимает функцию
-//фильтр запускает функцию для каждого элемента
-
-let femalesObj = users.filter((user) => {
-  return user.gender === 'f';
-});
-console.log(femalesObj);
-
-
-//map возвращает новый массив
-let femalesStr = femalesObj.map((user) => {
-  return user.firstName + ' ' + user.lastName;
-
-});
-console.log(femalesStr);
-
-
-let femaleStr2 = users
-  //если стрелочная один аргумент, то можно убрать скобки
-  .filter(user => user.gender === 'f')
-  .map(user => user.firstName + ' ' + user.lastName);
-console.log(femaleStr2);
-
-//доп задание решить с reduce вместо filter и map
+//
+// console.log(sumNumbers(2, 3)); //5
+// console.log(sumNumbers(3));// NaN потому что 3 + undefined = NaN
+//
+//
+// //порядок аргументов важен
+//
+// function showFulName(firstName, lastName) {
+//   console.log(firstName, lastName);
+// }
+//
+// showFulName('Киркоров', 'Филипп');//Киркоров Филипп
+// showFulName('Киркоров');//Киркоров undefined
+//
+// //как избежать этих ошибок, если нет одного из параметров? Надо задать значения по умолчанию.
+//
+// //старый синтаксис
+// function noError1(a, b) {
+//   if (b === undefined) {
+//     b = 0;
+//   }
+//   return a + b;
+// }
+//
+// console.log(noError1(5)); //5  так как 5 + 0 = 5
+//
+// //современный синтаксис
+// function noError2(a, b = 0) {
+//   return a + b;
+// }
+//
+// console.log(noError2(5)); //5  так как 5 + 0 = 5
+//
+// //А что если мы пытаемся передать больше аргументов, чем есть в функкции?
+// function noError3(a, b) {
+//   // console.log('args:', arguments) // args: [Arguments] { '0': 3, '1': 2, '2': 4 }
+//   console.log('args[2]:', arguments['2']); // args: 4
+//   console.log('args.length:', arguments.length); // args: 4
+//
+//
+//   let result = 0;
+//
+//   for (let i = 0; i < arguments.length; i++) {
+//     let argNum = arguments[i];
+//     result += argNum;
+//   }
+//
+//
+//   return result;
+// }
+//
+// console.log(noError3(3, 2, 4, 5, 6));
+//
+//
+// //У стрелочных функций нет this и так же нет arguments!
+//
+//
+// //Область видимости
+//
+// //функции доступны все внешние переменные за ее пределами
+// let a = 1;
+//
+// function func1() {
+//   console.log('a:', a);
+// }
+//
+// func1();
+//
+//
+// // //Ошибка, так как мы не можем залезть внутрь функции и прочитать ее переменную
+// // function func2() {
+// //     let b = 1;
+// // }
+// // console.log('b:', b) //ReferenceError: b is not defined
+//
+//
+// //внутри функции можно объявлять другие функции
+// //функция внутри функции видит все функции, которые есть выше
+//
+// let c = 1;
+//
+// function func3() {
+//   console.log('с:', c);
+//
+//   let d = 2;
+//
+//   let func4 = function () {
+//     console.log('func4 c', c);
+//     console.log('func4 d', d);
+//   };
+//
+//   func4();
+//
+// }
+//
+// func3();
+//
+// //функция является объектом, объекты разные поэтому false
+// console.log((function () {
+// }) === (function () {
+// }));
+//
+//
+// // массивы в js
+// // Тип данных массива это объект
+// // Создают через скобки
+//
+// let arr1 = [1, 2, 'test', {a: 3}];
+// console.log(arr1);
+//
+// // в массиве храним коллекции данных
+//
+// // индексы это адреса элементов в массиве. В качестве ключа выступают индексы
+// // начинается с 0
+//
+// console.log(arr1[0]);
+// console.log(arr1[2]);
+//
+// let arr2 = [1, 2, 3, [4, 5], 6, 7];
+//
+// console.log(arr2[3][0]);//4
+//
+// //как найти элемент в массиве(метода массива)
+//
+// let arr3 = [1, 2, 'test', {a: 1}];
+// console.log(arr3.includes('test'));//true
+// console.log(arr3.indexOf('test'));//2
+// // если элемент не найден то получаю - 1 если найден, то получаем index
+//
+// console.log(arr3.find((el) => {
+//   return el === 'test';
+// }));
+// //возращает сам элемент массива
+//
+//
+// let arr4 = [1, 2, 3];
+// console.log(arr4.length);
+// console.log(arr4);
+//
+// //push добавить новый элемент в массив
+// arr4.push(4);
+//
+// console.log(arr4);
+//
+// //удаляем послдений элемент из массива с конца
+// arr4.pop();
+// console.log(arr4);
+//
+//
+// //добавляем первый элемент из массива с конца
+// arr4.unshift(0);
+// console.log(arr4);
+//
+// //удаляем первый элемент из массива с конца
+// arr4.shift();
+// console.log(arr4);
+//
+// //почему в конец лучше добавлять? Потому что мы не хотим переиндексацию
+//
+// let arr5 = [1, 2, 3, 4, 5, 6];
+// console.log(arr5.reverse());
+//
+//
+// let users = [
+//   {
+//     firstName: 'Алла',
+//     lastName: 'Пугачева',
+//     gender: 'f'
+//   },
+//   {
+//     firstName: 'Филипп',
+//     lastName: 'Кирковров',
+//     gender: 'm'
+//   },
+//   {
+//     firstName: 'ольга',
+//     lastName: 'бузова',
+//     gender: 'f'
+//   },
+//   {
+//     firstName: 'Максим',
+//     lastName: 'Галкин',
+//     gender: 'm'
+//   },
+// ];
+//
+//
+// // 1 способ
+// let usersResult = [];
+// for (let user of users) {
+//   if (user.gender === 'f') {
+//     usersResult.push(user.firstName + ' ' + user.lastName);
+//   }
+// }
+// console.log(usersResult);
+//
+// // 2 способ
+// //принимает функцию
+// //фильтр запускает функцию для каждого элемента
+//
+// let femalesObj = users.filter((user) => {
+//   return user.gender === 'f';
+// });
+// console.log(femalesObj);
+//
+//
+// //map возвращает новый массив
+// let femalesStr = femalesObj.map((user) => {
+//   return user.firstName + ' ' + user.lastName;
+//
+// });
+// console.log(femalesStr);
+//
+//
+// let femaleStr2 = users
+//   //если стрелочная один аргумент, то можно убрать скобки
+//   .filter(user => user.gender === 'f')
+//   .map(user => user.firstName + ' ' + user.lastName);
+// console.log(femaleStr2);
+//
+// //доп задание решить с reduce вместо filter и map

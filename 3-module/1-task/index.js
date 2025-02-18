@@ -1,10 +1,1 @@
-function namify(users) {
-    let names = users.map(function (user) {
-        return user.name
-    });
-    return names
-}
-
-
-
-
+const namify = users => users.map(user => user.name);

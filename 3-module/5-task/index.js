@@ -1,18 +1,11 @@
 function getMinMax(str) {
 
-  let arr = str.split(' ');
-  let numbers = [];
-  let min;
-  let max;
+    let numbers = str
+        .split(' ')
+        .map(item => parseFloat(item))
+        .filter(item => !isNaN(item))
 
-  arr.forEach(function (item) {
-    let num = parseFloat(item);
-    if (num === num) {
-      numbers.push(num);
-    }
-  });
-
-  min = Math.min(...numbers);
-  max = Math.max(...numbers);
-  return {min, max};
+    let min = Math.min(...numbers);
+    let max = Math.max(...numbers);
+    return {min, max};
 }

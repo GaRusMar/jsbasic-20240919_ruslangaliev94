@@ -758,3 +758,12 @@
 // console.log(femaleStr2);
 //
 // //доп задание решить с reduce вместо filter и map
+
+
+
+
+
+// DOM - Document Object Model
+
+
+

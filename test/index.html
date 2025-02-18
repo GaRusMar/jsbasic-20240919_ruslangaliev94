@@ -1,1 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 
+</body>
+
+<h1 id="title">title</h1>
+<span>text</span>
+
+<script>
+    console.dir('document', document)
+    console.log('document', document)
+    console.log('body', document.body)
+    console.log('children', document.children)
+    console.log('childNodes', document.childNodes)
+
+    // let h1 = document.body.children[0];
+    let h1 = document.getElementById('title')
+    console.log('h1', h1)
+
+    h1.style.color = 'red'
+    title.style.color = 'blue'
+</script>
+
+
+<ul class="list">
+    <li class="list-item">item</li>
+    <li class="list-item">item</li>
+    <li class="list-item">item</li>
+</ul>
+
+<script>
+    let listItems = document.getElementsByClassName('list-item')
+    for (let li of listItems) {
+        li.style.color = 'red'
+    }
+    console.log(listItems)
+</script>
+
+
+<button class="btn">BTN 1</button>
+<button class="btn">BTN 2</button>
+<button class="btn">BTN 3</button>
+
+
+<script>
+    let firstBtn = document.querySelector('.btn');
+    firstBtn.style.color = 'white'
+    firstBtn.style.backgroundColor = 'black'
+    firstBtn.style.cssFloat = 'left'
+
+    let allBtns = document.querySelectorAll('.btn');
+    allBtns.style.backgroundColor = 'red'
+
+</script>
+
+
+</html>

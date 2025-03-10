@@ -49,14 +49,292 @@
 
 <script>
     let firstBtn = document.querySelector('.btn');
+
+    console.log('firstBtn.nodeType', firstBtn.nodeType)
+    console.log('firstBtn.tagName', firstBtn.tagName)
+
     firstBtn.style.color = 'white'
     firstBtn.style.backgroundColor = 'black'
     firstBtn.style.cssFloat = 'left'
 
     let allBtns = document.querySelectorAll('.btn');
-    allBtns.style.backgroundColor = 'red'
+    // allBtns.style.backgroundColor  = 'black'
+
+    console.log(allBtns)
+
+
+</script>
+
+<a id="yaLink" href="http://ya.ru">Yandex</a>
+
+<img id="img"
+     src="data:image/jpeg;base64,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"
+     alt="">
+
+<script>
+    let yaLink = document.getElementById('yaLink')
+    yaLink.id = 'googleLink'
+    yaLink.href = 'http://google.com'
+
+    let img = document.querySelector('img');
+    img.id = 'image'
+    // img.href = 'http://google.com'
+    // img.setAttribute('href', 'http://google.com')
+</script>
+
+<style>
+    .advert {
+        width: 100px;
+        height: 100px;
+        background-color: yellow;
+        text-align: center;
+        border: 5px solid black;
+    }
+</style>
+<div class="advert">реклама</div>
+
+<script>
+    let advert = document.querySelector('.advert');
+    advert.hidden = false
+</script>
+
+<!--data-атрибуты были придуманы, чтобы проходить валидацию всегда. Чтобы не было непонятных слов в разметке.-->
+
+<ul class="phones">
+    <li data-price-usd="100">1</li>
+    <li data-price-usd="200">2</li>
+    <li data-price-usd="100">3</li>
+</ul>
+
+<script>
+    let phones = document.querySelectorAll('.phones li')
+    for (let phoneLi of phones) {
+        phoneLi.dataset.priceUsd = 300;
+        console.log('price', phoneLi.dataset.priceUsd);
+    }
+</script>
+
+
+<p id="text" class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta ea illum impedit ipsam nam! Ad, corporis facere harum numquam repellat sunt temporibus voluptas. Aut eaque eligendi id modi officiis omnis.</p>
+
+<style>
+    .large {
+        font-size: 30px;
+    }
+
+    .red {
+        color: red;
+    }
+</style>
+
+
+<script>
+    let text = document.getElementById('text');
+
+    // text.className = 'large';
+    // text.className += ' red';
+    text.classList.add('large');
+    text.classList.add('red');
+    text.classList.toggle('large', 5 > 2); //передаем параметр true или false
+    console.log(text.classList.toggle('large', 5 > 2))// true
+
+    text.classList.contains('red'); // true
+    console.log(text.classList.contains('red'))
 
 </script>
 
 
+<!--создание элементов-->
+
+<ul class="products">
+    <li class="products-item">1</li>
+    <li class="products-item">2</li>
+    <li class="products-item">3</li>
+</ul>
+
+<script>
+    let products = document.querySelector('.products');//<ul class="products">
+    let newProduct = document.createElement('li');// вот сейчас элемент не отобразится, он просто находится в памяти
+    newProduct.classList.add('products-item')
+    // newProduct.textContent = '4'; //  li с текстом
+    newProduct.innerHTML = '<b>4</b>'; //  li с текстом, но тут innerHTML парсит строку, которую мы передаем, если распарсит как элемент, то вставить как элемент
+
+    products.append(newProduct); // пустая li
+
+    products.insertAdjacentHTML('beforeend', '<li class="products-item">5</li>');
+    products.insertAdjacentHTML('beforebegin', '<li class="products-item">0</li>');
+    products.insertAdjacentHTML('afterbegin', '<li class="products-item">0</li>');
+    products.insertAdjacentHTML('afterend', '<li class="products-item">5</li>');
+
+
+</script>
+
+
+<!--Занятие 4-->
+
+
+<script>
+
+    let friends = [
+        {
+            firstName: 'Artsiom',
+            lastName: 'Mezin'
+        },
+        {
+            firstName: 'Ilia',
+            lastName: 'Kantor'
+        },
+        {
+            firstName: 'Christopher',
+            lastName: 'Michael'
+        }
+    ];
+
+    function makeFriendsList(friends) {
+        let list = document.createElement('ul');
+
+        for (let friendItem of friends) {
+            let item = document.createElement('li');
+            item.innerHTML = friendItem.firstName + ' ' + friendItem.lastName; // добавлен пробел
+            list.appendChild(item);
+        }
+
+        return list;
+    }
+
+    makeFriendsList(friends)
+    document.body.appendChild(makeFriendsList(friends))
+</script>
+
+
+<!--<table>-->
+<!--    <tr>-->
+<!--        <td>1:1</td>-->
+<!--        <td>2:1</td>-->
+<!--        <td>3:1</td>-->
+<!--        <td>4:1</td>-->
+<!--        <td>5:1</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>1:2</td>-->
+<!--        <td>2:2</td>-->
+<!--        <td>3:2</td>-->
+<!--        <td>4:2</td>-->
+<!--        <td>5:2</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>1:3</td>-->
+<!--        <td>2:3</td>-->
+<!--        <td>3:3</td>-->
+<!--        <td>4:3</td>-->
+<!--        <td>5:3</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>1:4</td>-->
+<!--        <td>2:4</td>-->
+<!--        <td>3:4</td>-->
+<!--        <td>4:4</td>-->
+<!--        <td>5:4</td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--        <td>1:5</td>-->
+<!--        <td>2:5</td>-->
+<!--        <td>3:5</td>-->
+<!--        <td>4:5</td>-->
+<!--        <td>5:5</td>-->
+<!--    </tr>-->
+<!--</table>-->
+<!--<script>-->
+
+<!--    function makeDiagonalRed(table) {-->
+<!--        // for (let i = 0; i < table.rows.length; i++) {-->
+<!--        //     const row = table.rows[i];-->
+<!--        //     const cell = row.cells[i];-->
+<!--        //     cell.style.backgroundColor = 'red'-->
+<!--        // }-->
+
+<!--        let i = 0;-->
+<!--        for (let row of table.rows) {-->
+<!--            table.rows[i].cells[i].style.backgroundColor = 'red'-->
+<!--            i++-->
+<!--        }-->
+<!--    }-->
+
+<!--    const table = document.querySelector('table')-->
+
+<!--    makeDiagonalRed(table); // Вызываем функцию для изменения фона диагональных ячеек-->
+
+<!--</script>-->
+
+
+<table class="js-teachers">
+    <thead>
+    <tr>
+        <td>Name</td>
+        <td>Age</td>
+        <td>Gender</td>
+        <td>Status</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Ilia</td>
+        <td>30</td>
+        <td>m</td>
+        <td data-available="true">Free</td>
+    </tr>
+    <tr>
+        <td>Tim</td>
+        <td>39</td>
+        <td>m</td>
+        <td data-available="false">On duty</td>
+    </tr>
+    </tbody>
+</table>
+
+
+<script>
+
+
+    function highlight(table) {
+
+        let list = table.tBodies[0].rows;
+
+
+        for (let row of list) {
+
+
+            for (let cell of row.cells) {
+
+                if (cell.textContent === 'm') {
+                    row.classList.add('male')
+                } else if (cell.textContent === 'f') {
+                    row.classList.add('female')
+                }
+
+
+                if (cell.dataset.available === 'true') {
+                    row.classList.add('available')
+                } else if (cell.dataset.available === 'false') {
+                    row.classList.add('unavailable')
+                }
+
+                if (cell.textContent < 18) {
+                    row.style.textDecoration = 'line-through'
+                }
+            }
+            if (!row.querySelector('[data-available]')) {
+                row.hidden = true;
+            }
+        }
+    }
+
+    const table = document.querySelector('.js-teachers')
+
+    highlight(table)
+</script>
+
+
 </html>
+
+

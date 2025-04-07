@@ -83,6 +83,7 @@
 // //
 // // // typeof - оператор возвращает строку с типом данных операнда
 // // console.log(typeof 'test') // string
+// // console.log(typeof 1) // number
 // // console.log(typeof undefined) // undefined
 // // console.log(typeof null) // object - ошибка языка JS
 // //
@@ -159,6 +160,7 @@
 // // let not = !true;
 // // console.log('not', not) //false
 // //
+// // Конец первого задания
 // //
 // // console.log(5 + '5')
 // // console.log(5 + +'5')
@@ -758,9 +760,6 @@
 // console.log(femaleStr2);
 //
 // //доп задание решить с reduce вместо filter и map
-
-
-
 
 
 // DOM - Document Object Model

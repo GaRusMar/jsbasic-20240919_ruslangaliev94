@@ -10,7 +10,7 @@ helloUser1();
 helloUser1();
 
 function helloUser1() {
-  console.log('Hello пользователь 1');
+    console.log('Hello пользователь 1');
 }
 
 // ✅ Можно вызывать до места объявления в коде
@@ -19,7 +19,7 @@ function helloUser1() {
 
 // --- Function Expression (Функциональное выражение) ---
 let helloUser2 = function () {
-  console.log('Hello пользователь 2');
+    console.log('Hello пользователь 2');
 };
 
 helloUser2(); // ⛔ Нельзя вызывать до объявления
@@ -31,7 +31,7 @@ helloUser2(); // ⛔ Нельзя вызывать до объявления
 
 // --- Arrow Function (Стрелочная функция) ---
 let helloUser3 = () => {
-  console.log('Hello пользователь 3');
+    console.log('Hello пользователь 3');
 };
 
 helloUser3();
@@ -47,10 +47,10 @@ helloUser3();
 
 // --- Возврат из функции (return) ---
 function sum() {
-  if (5 > 2) {
-    return 1 + 2; // выход из функции
-  }
-  console.log('sum:', 1 + 2); // не выполнится
+    if (5 > 2) {
+        return 1 + 2; // выход из функции
+    }
+    console.log('sum:', 1 + 2); // не выполнится
 }
 
 let sumResult = sum();
@@ -59,10 +59,10 @@ console.log('sumResult:', sumResult); // 3
 
 // 💡 Важно! return работает на уровне строки
 function test() {
-  return; // интерпретатор завершает выполнение здесь!
-  {
-    a: 1;
-  }
+    return; // интерпретатор завершает выполнение здесь!
+    {
+        a: 1;
+    }
 }
 
 let testResult = test();
@@ -71,22 +71,22 @@ console.log('testResult:', testResult); // undefined
 
 // --- Аргументы функции ---
 function sumNumbers(m, n) {
-  return m + n;
+    return m + n;
 }
 
 console.log('sumNumbers:', sumNumbers(2, 3)); // 5
 
 // Аргументы по умолчанию + объект `arguments`
 function sumNumbers2(m, n = 0) {
-  console.log('args[2]:', arguments[2]);      // можно обращаться к аргументам по индексу
-  console.log('args.length:', arguments.length);
+    console.log('args[2]:', arguments[2]);      // можно обращаться к аргументам по индексу
+    console.log('args.length:', arguments.length);
 
-  let result = 0;
-  for (let i = 0; i < arguments.length; i++) {
-    result += arguments[i];
-  }
+    let result = 0;
+    for (let i = 0; i < arguments.length; i++) {
+        result += arguments[i];
+    }
 
-  return result;
+    return result;
 }
 
 console.log('sumNumbers2:', sumNumbers2(3, 2, 4, 5, 6)); // 20
@@ -96,18 +96,18 @@ console.log('sumNumbers2:', sumNumbers2(3, 2, 4, 5, 6)); // 20
 let a = 1;
 
 function func1() {
-  console.log('func1 a:', a); // доступ к внешней переменной `a`
+    console.log('func1 a:', a); // доступ к внешней переменной `a`
 
-  let b = 2;
+    let b = 2;
 
-  let func2 = function () {
-    let c = 3;
-    console.log('func2 a:', a); // внешняя
-    console.log('func2 b:', b); // внешняя из `func1`
-    console.log('func2 c:', c); // локальная
-  };
+    let func2 = function () {
+        let c = 3;
+        console.log('func2 a:', a); // внешняя
+        console.log('func2 b:', b); // внешняя из `func1`
+        console.log('func2 c:', c); // локальная
+    };
 
-  func2();
+    func2();
 }
 
 func1();
@@ -151,7 +151,7 @@ console.log(arr3.indexOf('test')); // возвращает индекс или -
 console.log(arr3.indexOf(123));    // -1, если не найден
 
 console.log(arr3.find((el) => {
-  return el === 'test';
+    return el === 'test';
 })); // возвращает сам элемент или undefined
 
 
@@ -196,26 +196,26 @@ console.log('arr5 после reverse:', arr5);
 
 // более сложные методы
 let users = [
-  {
-    firstName: 'Alla',
-    lastName: 'Pugacheva',
-    gender: 'Female',
-  },
-  {
-    firstName: 'Filippo',
-    lastName: 'Kirkorov',
-    gender: 'Male',
-  },
-  {
-    firstName: 'Olga',
-    lastName: 'Buzova',
-    gender: 'Female',
-  },
-  {
-    firstName: 'Maxim',
-    lastName: 'Galkin',
-    gender: 'Male'
-  },
+    {
+        firstName: 'Alla',
+        lastName: 'Pugacheva',
+        gender: 'Female',
+    },
+    {
+        firstName: 'Filippo',
+        lastName: 'Kirkorov',
+        gender: 'Male',
+    },
+    {
+        firstName: 'Olga',
+        lastName: 'Buzova',
+        gender: 'Female',
+    },
+    {
+        firstName: 'Maxim',
+        lastName: 'Galkin',
+        gender: 'Male'
+    },
 ];
 
 // задача: отфильтровать пользователей и получить список женщин как массив строк
@@ -223,9 +223,9 @@ let users = [
 
 let userResult = [];
 for (let user of users) {
-  if (user.gender === 'Female') {
-    userResult.push(`${user.firstName} ${user.lastName}`);
-  }
+    if (user.gender === 'Female') {
+        userResult.push(`${user.firstName} ${user.lastName}`);
+    }
 }
 
 console.log('userResult:', userResult);
@@ -236,14 +236,14 @@ console.log('userResult:', userResult);
 // filter — фильтрует массив, возвращает новый массив отфильтрованных элементов
 // принимает функцию, которая возвращает true/false
 let femaleObj = users.filter((user) => {
-  return user.gender === 'Female';
+    return user.gender === 'Female';
 });
 
 console.log('femaleObj:', femaleObj);
 
 // map — не фильтрует, возвращает новый массив с результатом выполнения функции
 let femaleStr = femaleObj.map((user) => {
-  return `${user.firstName} ${user.lastName}`;
+    return `${user.firstName} ${user.lastName}`;
 });
 
 console.log('femaleStr:', femaleStr);
@@ -252,8 +252,8 @@ console.log('femaleStr:', femaleStr);
 
 // короткая запись
 let femaleStr2 = users
-  .filter(user => user.gender === 'Female')
-  .map(user => `${user.firstName} ${user.lastName}`);
+    .filter(user => user.gender === 'Female')
+    .map(user => `${user.firstName} ${user.lastName}`);
 
 console.log('femaleStr2:', femaleStr2);
 
@@ -265,10 +265,10 @@ console.log('femaleStr2:', femaleStr2);
 // решить задачу с методом reduce
 
 let femaleStrReduce = users.reduce((acc, user) => {
-  if (user.gender === 'Female') {
-    acc.push(`${user.firstName} ${user.lastName}`);
-  }
-  return acc;
+    if (user.gender === 'Female') {
+        acc.push(`${user.firstName} ${user.lastName}`);
+    }
+    return acc;
 }, []);
 
 console.log('femaleStrReduce:', femaleStrReduce);
@@ -284,4 +284,93 @@ console.log('femaleStrReduce:', femaleStrReduce);
 // В конце reduce возвращает этот массив, как и требовалось.
 //
 // 🧠 Этот способ удобен, когда нужно одновременно фильтровать и преобразовывать — всё в одном проходе, без промежуточных массивов.
+
+//пример
+let numbersNew = [1, 2, 3, 4]
+
+
+let sumNumbersNew = numbersNew.reduce((acc, number) => {
+    return acc + number;
+}, 0);
+
+console.log('sumNumbersNew:', sumNumbersNew);
+
+
+let male = users.reduce((acc, user) => {
+    if (user.gender === 'Male') {
+        acc.push(`${user.firstName} ${user.lastName}`)
+    }
+    return acc
+}, []);
+
+console.log('male:', male)
+
+
+let fruits = ['apple', 'banana', 'cherry'];
+
+let bigFruits = fruits.map(fruit => {
+    return fruit.toUpperCase()
+});
+
+console.log(bigFruits)
+
+
+let fruitData = [
+    {name: 'apple', count: 2},
+    {name: 'banana', count: 5},
+    {name: 'cherry', count: 3},
+];
+
+let strs = fruitData.map(str => `Фрукт: ${str.name}, Кол-во: ${str.count}`);
+
+console.log(strs)
+
+
+let nums = [1, 2, 3, 4, 5];
+
+let numsDouble = nums.map(element => Math.pow(element, 2));
+
+console.log(numsDouble)
+
+
+let words = ['car', 'bike', 'train', 'bus', 'plane'];
+
+let wordsLength = words.filter(element => element.length > 3);
+
+console.log(wordsLength)
+
+
+// Метод массива find() ищет первый элемент, который удовлетворяет условию, и возвращает его.
+//
+// 📌 В отличие от filter(), find() вернёт один элемент, а не массив.
+let products = [
+    {id: 101, name: 'Ноутбук', price: 1500},
+    {id: 102, name: 'Смартфон', price: 700},
+    {id: 103, name: 'Планшет', price: 900}
+];
+
+let expensiveProduct = products.find(product => product.price > 800)
+
+console.log(expensiveProduct)
+
+
+// Метод some() проверяет, есть ли хотя бы один элемент, удовлетворяющий условию.
+//     Он возвращает true или false, а не сам элемент.
+
+
+let usersxxx = [
+    {name: 'Руслан', age: 32},
+    {name: 'Аня', age: 28},
+    {name: 'Миша', age: 17}
+];
+
+let hasTeen = usersxxx.some(user => user.age < 18);
+
+console.log(hasTeen); // должно быть true
+
+
+let arr = [1, 2, 3];
+console.log(arr.pop());
+console.log(arr);
+
 

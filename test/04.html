@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Практика JS</title>
+  <style>
+    .advert {
+      background-color: #bada55;
+      width: 100px;
+      height: 100px;
+      text-align: center;
+    }
+
+    .large {
+      text-transform: uppercase; /* Преобразует текст в ВЕРХНИЙ РЕГИСТР */
+    }
+
+    .red {
+      color: red; /* Красный цвет текста */
+    }
+  </style>
+</head>
+<body>
+
+<!-- DOM (Document Object Model) -->
+<!-- Представление HTML-документа в виде дерева объектов -->
+<!-- Позволяет работать с элементами и их свойствами через JavaScript -->
+<h1 id="title">title</h1>
+<span>text</span>
+
+<script>
+  // Получаем дочерние элементы body
+  console.log('document.body.children', document.body.children); // HTMLCollection — только элементы
+  console.log('document.body.childNodes', document.body.childNodes); // NodeList — все узлы (включая текстовые)
+
+  // Получение заголовка по id
+  let h1 = document.getElementById('title');
+  h1.style.color = 'red'; // Меняем цвет заголовка
+
+  // console.log(title); // Иногда можно обратиться напрямую к элементу по id, но это плохая практика
+  console.log('h1', h1);
+</script>
+
+<!-- Пример получения по классу -->
+<ul class="list-items">
+  <li class="list-item">banana</li>
+  <li class="list-item">mandarin</li>
+  <li class="list-item">Kivi</li>
+</ul>
+<script>
+  // Получаем список по классу
+  let list = document.getElementsByClassName('list-items');
+
+  // Перебираем HTMLCollection и задаём стиль
+  for (let item of list) {
+    item.style.color = 'red';
+  }
+</script>
+
+<!-- Работа с querySelector / querySelectorAll -->
+<button class="btn">BTN 1</button>
+<button class="btn">BTN 2</button>
+<button class="btn">BTN 3</button>
+<script>
+  // Получаем первый элемент с классом .btn
+  let firstBtn = document.querySelector('.btn');
+  firstBtn.style.color = 'red';
+  firstBtn.style.backgroundColor = 'green'; // Стиль через camelCase
+  firstBtn.style.cssFloat = 'left'; // Особый случай: вместо float — cssFloat
+
+  // Получаем все элементы с классом .btn
+  let allBtn = document.querySelectorAll('.btn');
+  allBtn.forEach(btn => btn.style.color = 'pink');
+
+  console.log('firstBtn.nodeType', firstBtn.nodeType); // 1 — тип узла: элемент
+  console.log('firstBtn.tagName', firstBtn.tagName); // Название тега: BUTTON
+</script>
+
+<!-- Работа с атрибутами элементов -->
+<a id='yaLink' href="https://ya.ru">ссылка</a>
+<img src="data:image/jpeg;base64,..." alt="" height="168" width="168"/>
+<script>
+  // Меняем id и href у ссылки
+  let yaLink = document.getElementById("yaLink");
+  yaLink.id = 'googleLink'; // id можно изменить
+  yaLink.href = 'goggle'; // Меняем адрес ссылки
+
+  // Работа с изображением
+  let img = document.querySelector("img");
+  img.id = 'image';
+
+  // Попытка добавить href — не сработает, так как для <img> это не имеет смысла
+  img.setAttribute('href', 'goggle');
+</script>
+
+<!-- Скрытие и отображение элементов -->
+<div class="advert">реклама</div>
+<script>
+  let advert = document.querySelector('.advert');
+  advert.hidden = false; // Показать
+  advert.hidden = true;  // Скрыть
+</script>
+
+<!-- Data-* атрибуты: современный способ хранения доп. информации -->
+<ul class="phones">
+  <li data-price-usd="100000">samsung</li>
+  <li data-price-usd="200000">iphone</li>
+</ul>
+<script>
+  // Получаем все <li> в .phones
+  let phones = document.querySelectorAll('.phones li');
+
+  // Выводим значение data-атрибута
+  for (let phone of phones) {
+    console.log(phone.dataset.priceUsd); // dataset — доступ к data-* атрибутам
+  }
+</script>
+
+<!-- Работа с классами через classList -->
+<p id="text">text</p>
+<script>
+  let text = document.getElementById('text');
+  text.classList.add('large');  // Добавляем класс
+  text.classList.add('red');    // Ещё один класс
+  text.classList.remove('red'); // Удаляем класс
+
+  text.classList.toggle('red');           // Переключает наличие класса
+  text.classList.toggle('red');           // Ещё раз — вернёт обратно
+  text.classList.toggle('red', true);     // Принудительно добавляет
+  text.classList.toggle('red', false);    // Принудительно убирает
+  text.classList.toggle('red', 5 > 2);    // Добавляет если условие true
+  console.log(text.classList.contains('red')); // Проверка наличия класса
+</script>
+
+<!-- Создание и вставка элементов -->
+<ul class="product">
+  <li class="product-item">Mork</li>
+  <li class="product-item">Luk</li>
+</ul>
+<script>
+  let product = document.querySelector('.product');
+
+  // Создаём элемент в памяти
+  let newProduct = document.createElement('li');
+  newProduct.textContent = 'перец';
+  newProduct.classList.add('product-item');
+
+  // Добавляем в конец списка
+  product.append(newProduct);
+
+  // Альтернативный способ через insertAdjacentHTML
+  product.insertAdjacentHTML('beforeEnd', '<li class="product-item">Fopa</li>');
+</script>
+
+</body>
+</html>

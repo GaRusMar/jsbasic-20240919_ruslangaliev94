@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>События JS</title>
+</head>
+<body>
+
+<!--Это плохо смешеваие нашей логики с нашим предтсавлением-->
+<!--Сложно добавлять инлайном и вешать обрабочики дополнительные-->
+<!--<button class="btn1" onclick="btn1Handler1()">BTN 1</button>-->
+
+<!--Второй вид записи-->
+<button class="btn1">BTN 1</button>
+
+
+<script>
+    function btn1Handler1() {
+        console.log('BTN 1 Handler1')
+    }
+
+    function btn1Handler2() {
+        console.log('BTN 1 Handler2')
+    }
+
+
+    // Второй вид записи тоже недостаток, нельзя добавить еще обработчик просто перезаетр
+    //только одни обрабочтик если мы уверены
+    let btn1 = document.querySelector('.btn1')
+    btn1.onclick = btn1Handler1 //тут чрез свойство
+    btn1.onclick = btn1Handler2 //тут чрез свойство
+    //как удалить обработчик событий
+    btn1.onclick = null
+
+
+    // лучший способ, люое колчиество обработчков
+    //Подписка на событие
+    btn1.addEventListener('click', btn1Handler1);
+    btn1.addEventListener('click', btn1Handler2);
+
+    //как удалить обработчик событий
+    //Отписка от событий
+    btn1.removeEventListener('click', btn1Handler1);
+    btn1.removeEventListener('click', btn1Handler2);
+
+
+    //Не через ссылку, а как анонимную
+    btn1.addEventListener('click', () => {
+        console.log("Btn1 click")
+    });
+    //удалим ее. Не получилось, так как совершенно разные функции и ссылка на них разные. Мы не сможем удалить обработчик. Нет такого метода.
+    btn1.removeEventListener('click', () => {
+        console.log("Btn1 click")
+    });
+
+
+
+
+</script>
+
+</body>
+</html>

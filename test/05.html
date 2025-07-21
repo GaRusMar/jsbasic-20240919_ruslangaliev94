@@ -54,8 +54,150 @@
     });
 
 
+</script>
 
 
+<button class="btn2">BTN 2</button>
+
+<script>
+    let btn2 = document.querySelector('.btn2');
+
+
+    // event или e это аргумент и JS передаст событие в этот аргумент
+
+    btn2.addEventListener('click', (event) => {
+        console.log(event)
+        //куча свойтв и методов
+        //isTrusted - настоящие или сентетиское свойство и многие другие
+
+        console.log(event.target)//ссылка на элемент на котором создано событие
+
+        event.target.style.backgroundColor = 'black'
+
+    });
+
+
+</script>
+
+
+<a id="yaLink" href="https://ya.ru">YA</a>
+
+
+<script>
+    let yaLink = document.querySelector('#yaLink');
+    yaLink.addEventListener('click', event => {
+        event.preventDefault(); // уберем переход по ссылке лучше писать в начале но не важно
+        console.log('тык')
+
+    })
+</script>
+
+
+<script>
+    //поэтмоу можем сделать так
+    // выполнится когда все теги будут прогруженны
+    //DOMContentLoaded не ожидает загрузки например картинки но тег img сразу отработает
+    document.addEventListener('DOMContentLoaded', () => {
+
+        let btn3 = document.querySelector('.btn3'); //если выше то будет null
+
+        btn3.addEventListener('click', () => {
+            console.log('тык btn3 круто через DOMContentLoaded')
+        })
+
+    })
+</script>
+
+
+<button class="btn3">BTN 3</button>
+
+
+<!--если скритп перенсти выше, то будет ошибка-->
+<!--так как станица выполняется сверху вниз-->
+<!--ищется кнопка btn3 а ее еще не существует-->
+
+<!--<script>-->
+<!--    let btn3 = document.querySelector('.btn3'); //если выше то будет null-->
+
+<!--    btn3.addEventListener('click', () => {-->
+<!--        console.log('тык btn3')-->
+<!--    })-->
+<!--</script>-->
+
+
+<!--всплытие событий-->
+<div class="box1">
+    <div class="box2"></div>
+</div>
+
+<style>
+    .box1 {
+        padding: 20px;
+        width: 100px;
+        height: 100px;
+        background-color: green;
+    }
+
+    .box2 {
+        width: 50px;
+        height: 50px;
+        background-color: blue;
+    }
+</style>
+
+<script>
+    let box1 = document.querySelector('.box1');
+    let box2 = document.querySelector('.box2');
+
+    function box1Handler(event) {
+        console.log('box1 click', 'Зеленый');
+        console.log('box1 click', 'Зеленый', event.target);
+        console.log('box1 click', 'Зеленый', event.currentTarget);
+
+
+    }
+
+    // function box2Handler(event) {
+    //     console.log('box2 click', 'Синий');
+    // }
+
+
+    function box2Handler(event) {
+        event.stopPropagation(); //всплытие можно отменить, но без веской причины лучше этого не делать
+        console.log('box2 click', 'Синий');
+        console.log('box2 click', 'Синий', event.target);
+        console.log('box2 click', 'Синий', event.currentTarget);
+    }
+
+    box1.addEventListener('click', box1Handler)
+    box2.addEventListener('click', box2Handler)
+
+
+    // target элемент на котором создано событие
+    // currentTarget элемент на котором выполняется событие
+    // target всегда покажется где изначально это событие произошло
+
+
+</script>
+
+
+<!--делегирование-->
+<style>
+    .list, .list li {
+        padding: 10px;
+        border: 1px solid #000
+    }
+</style>
+<ul class="list">
+    <li>бананы</li>
+    <li>мандарины</li>
+    <li>апельсины</li>
+</ul>
+
+<script>
+    let list = document.querySelector('.list');
+
+    let listItems = list.querySelectorAll('li')
 </script>
 
 </body>

@@ -189,15 +189,39 @@
     }
 </style>
 <ul class="list">
-    <li>бананы</li>
+    <li><span>бананы</span></li>
     <li>мандарины</li>
     <li>апельсины</li>
 </ul>
 
 <script>
-    let list = document.querySelector('.list');
+    let list = document.querySelector('.list'); //ul
+    let listItems = list.querySelectorAll('li'); //li
 
-    let listItems = list.querySelectorAll('li')
+
+    // for (let li of listItems) {
+    //     li.addEventListener('click', ({target}) => {
+    //         target.style.textDecoration = 'line-through'
+    //     });
+    // }
+
+
+    list.addEventListener('click', event => {
+
+        let li = event.target.closest('li');  //метод closest - ищет ближайший род. элемент с таким селектором либо сам этот элемент ровняется селектору и он возваращает его
+
+
+        // if (event.target.tagName === 'LI') { //теперь точно li, но нужно сделать более универсальное решение
+        if (li) { //теперь точно li, но нужно сделать более универсальное решение
+            event.target.style.textDecoration = 'line-through' //тут ul тоже тыкаться будет
+        }
+
+
+    });
+
+
+    list.insertAdjacentHTML('beforeend', '<li>Арбузик</li>')
+
 </script>
 
 </body>

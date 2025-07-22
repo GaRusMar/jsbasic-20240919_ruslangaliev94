@@ -1,131 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>События JS</title>
+    <title>События в JavaScript</title>
 </head>
 <body>
 
-<!--Это плохо смешеваие нашей логики с нашим предтсавлением-->
-<!--Сложно добавлять инлайном и вешать обрабочики дополнительные-->
-<!--<button class="btn1" onclick="btn1Handler1()">BTN 1</button>-->
+<!-- ПЛОХОЙ ПОДХОД: смешение логики и представления -->
+<!-- Сложно добавлять дополнительные обработчики -->
+<!-- <button class="btn1" onclick="btn1Handler1()">BTN 1</button> -->
 
-<!--Второй вид записи-->
+<!-- ХОРОШИЙ ПОДХОД: работаем через JS -->
 <button class="btn1">BTN 1</button>
-
 
 <script>
     function btn1Handler1() {
-        console.log('BTN 1 Handler1')
+        console.log('BTN 1 Handler1');
     }
 
     function btn1Handler2() {
-        console.log('BTN 1 Handler2')
+        console.log('BTN 1 Handler2');
     }
 
+    // ВТОРОЙ ВАРИАНТ: через свойство .onclick
+    // Недостаток — можно назначить только один обработчик, он перезапишется
+    let btn1 = document.querySelector('.btn1');
+    btn1.onclick = btn1Handler1;
+    btn1.onclick = btn1Handler2; // перезапишет предыдущий
+    btn1.onclick = null; // удалим обработчик
 
-    // Второй вид записи тоже недостаток, нельзя добавить еще обработчик просто перезаетр
-    //только одни обрабочтик если мы уверены
-    let btn1 = document.querySelector('.btn1')
-    btn1.onclick = btn1Handler1 //тут чрез свойство
-    btn1.onclick = btn1Handler2 //тут чрез свойство
-    //как удалить обработчик событий
-    btn1.onclick = null
-
-
-    // лучший способ, люое колчиество обработчков
-    //Подписка на событие
+    // ЛУЧШИЙ ПОДХОД: .addEventListener — можно вешать сколько угодно обработчиков
     btn1.addEventListener('click', btn1Handler1);
     btn1.addEventListener('click', btn1Handler2);
 
-    //как удалить обработчик событий
-    //Отписка от событий
+    // Удаление обработчиков событий
     btn1.removeEventListener('click', btn1Handler1);
     btn1.removeEventListener('click', btn1Handler2);
 
-
-    //Не через ссылку, а как анонимную
+    // Анонимные функции
     btn1.addEventListener('click', () => {
-        console.log("Btn1 click")
+        console.log("Btn1 click");
     });
-    //удалим ее. Не получилось, так как совершенно разные функции и ссылка на них разные. Мы не сможем удалить обработчик. Нет такого метода.
+
+    // Удалить такую функцию не получится, так как ссылки разные
     btn1.removeEventListener('click', () => {
-        console.log("Btn1 click")
+        console.log("Btn1 click");
     });
-
-
 </script>
 
-
+<!-- Обработка события с объектом event -->
 <button class="btn2">BTN 2</button>
 
 <script>
     let btn2 = document.querySelector('.btn2');
 
-
-    // event или e это аргумент и JS передаст событие в этот аргумент
-
     btn2.addEventListener('click', (event) => {
-        console.log(event)
-        //куча свойтв и методов
-        //isTrusted - настоящие или сентетиское свойство и многие другие
-
-        console.log(event.target)//ссылка на элемент на котором создано событие
-
-        event.target.style.backgroundColor = 'black'
-
+        console.log(event); // объект события
+        console.log(event.target); // элемент, по которому кликнули
+        event.target.style.backgroundColor = 'black';
     });
-
-
 </script>
 
-
+<!-- Предотвращение перехода по ссылке -->
 <a id="yaLink" href="https://ya.ru">YA</a>
-
 
 <script>
     let yaLink = document.querySelector('#yaLink');
     yaLink.addEventListener('click', event => {
-        event.preventDefault(); // уберем переход по ссылке лучше писать в начале но не важно
-        console.log('тык')
-
-    })
+        event.preventDefault(); // лучше писать в начале
+        console.log('Ты кнул по ссылке, но не перешёл');
+    });
 </script>
 
-
+<!-- DOMContentLoaded — когда весь DOM загружен (без картинок и медиа) -->
 <script>
-    //поэтмоу можем сделать так
-    // выполнится когда все теги будут прогруженны
-    //DOMContentLoaded не ожидает загрузки например картинки но тег img сразу отработает
     document.addEventListener('DOMContentLoaded', () => {
-
-        let btn3 = document.querySelector('.btn3'); //если выше то будет null
-
+        let btn3 = document.querySelector('.btn3');
         btn3.addEventListener('click', () => {
-            console.log('тык btn3 круто через DOMContentLoaded')
-        })
-
-    })
+            console.log('Клик по btn3 через DOMContentLoaded');
+        });
+    });
 </script>
-
 
 <button class="btn3">BTN 3</button>
 
+<!-- Пояснение: если скрипт разместить выше кнопки, то она ещё не существует,
+поэтому обработчик не повесится, будет ошибка. -->
 
-<!--если скритп перенсти выше, то будет ошибка-->
-<!--так как станица выполняется сверху вниз-->
-<!--ищется кнопка btn3 а ее еще не существует-->
-
-<!--<script>-->
-<!--    let btn3 = document.querySelector('.btn3'); //если выше то будет null-->
-
-<!--    btn3.addEventListener('click', () => {-->
-<!--        console.log('тык btn3')-->
-<!--    })-->
-<!--</script>-->
-
-
-<!--всплытие событий-->
+<!-- ВСПЛЫТИЕ СОБЫТИЙ -->
 <div class="box1">
     <div class="box2"></div>
 </div>
@@ -150,78 +112,51 @@
     let box2 = document.querySelector('.box2');
 
     function box1Handler(event) {
-        console.log('box1 click', 'Зеленый');
-        console.log('box1 click', 'Зеленый', event.target);
-        console.log('box1 click', 'Зеленый', event.currentTarget);
-
-
+        console.log('box1 click — Зелёный');
+        console.log('event.target:', event.target); // где произошло
+        console.log('event.currentTarget:', event.currentTarget); // где обрабатывается
     }
-
-    // function box2Handler(event) {
-    //     console.log('box2 click', 'Синий');
-    // }
-
 
     function box2Handler(event) {
-        event.stopPropagation(); //всплытие можно отменить, но без веской причины лучше этого не делать
-        console.log('box2 click', 'Синий');
-        console.log('box2 click', 'Синий', event.target);
-        console.log('box2 click', 'Синий', event.currentTarget);
+        event.stopPropagation(); // ОТМЕНА всплытия события
+        console.log('box2 click — Синий');
+        console.log('event.target:', event.target);
+        console.log('event.currentTarget:', event.currentTarget);
     }
 
-    box1.addEventListener('click', box1Handler)
-    box2.addEventListener('click', box2Handler)
+    box1.addEventListener('click', box1Handler);
+    box2.addEventListener('click', box2Handler);
 
-
-    // target элемент на котором создано событие
-    // currentTarget элемент на котором выполняется событие
-    // target всегда покажется где изначально это событие произошло
-
-
+    // Важно: target — откуда пришло событие, currentTarget — где оно сейчас
 </script>
 
-
-<!--делегирование-->
+<!-- ДЕЛЕГИРОВАНИЕ СОБЫТИЙ -->
 <style>
     .list, .list li {
         padding: 10px;
-        border: 1px solid #000
+        border: 1px solid #000;
+        cursor: pointer;
     }
 </style>
+
 <ul class="list">
-    <li><span>бананы</span></li>
-    <li>мандарины</li>
-    <li>апельсины</li>
+    <li><span>Бананы</span></li>
+    <li>Мандарины</li>
+    <li>Апельсины</li>
 </ul>
 
 <script>
-    let list = document.querySelector('.list'); //ul
-    let listItems = list.querySelectorAll('li'); //li
-
-
-    // for (let li of listItems) {
-    //     li.addEventListener('click', ({target}) => {
-    //         target.style.textDecoration = 'line-through'
-    //     });
-    // }
-
+    let list = document.querySelector('.list');
 
     list.addEventListener('click', event => {
-
-        let li = event.target.closest('li');  //метод closest - ищет ближайший род. элемент с таким селектором либо сам этот элемент ровняется селектору и он возваращает его
-
-
-        // if (event.target.tagName === 'LI') { //теперь точно li, но нужно сделать более универсальное решение
-        if (li) { //теперь точно li, но нужно сделать более универсальное решение
-            event.target.style.textDecoration = 'line-through' //тут ul тоже тыкаться будет
+        let li = event.target.closest('li'); // closest — ищет ближайшего родителя li (или сам элемент)
+        if (li) {
+            li.style.textDecoration = 'line-through'; // подчёркиваем элемент
         }
-
-
     });
 
-
-    list.insertAdjacentHTML('beforeend', '<li>Арбузик</li>')
-
+    // Добавим новый элемент динамически
+    list.insertAdjacentHTML('beforeend', '<li>Арбузик</li>');
 </script>
 
 </body>

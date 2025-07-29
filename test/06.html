@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Компоненты JavaScript</title>
+</head>
+<body>
+
+
+<script>
+    // представим что данные приходят с сервера
+    let data = [
+        {
+            id: 1,
+            title: 'Новость 1',
+        },
+        {
+            id: 2,
+            title: 'Новость 2',
+        },
+        {
+            id: 3,
+            title: 'Новость 3',
+        }
+    ];
+
+
+    // создам фкнцию которая преобразует компонет рендера
+    // раньше когда испоьзовали компонетный подход через функции new писали this а сейчас ипользуем классы
+
+    function NewsFunc(newsData, color = '#000') { //принято с большой буквы сюда поподает массив объектов через аргумент newsData
+        let list = document.createElement('UL');
+        list.insertAdjacentHTML('beforeend', newsData.map(({id, title}) => `<li data-id="${id}" style="${color}">${title}</li>`));
+        return list;
+    }
+
+    // в этой переменно у нас UL который мы вернули
+    let newsFuncComponent = NewsFunc(data);
+
+    //И теперь вставим его на страницу
+    document.body.append(newsFuncComponent);
+    document.body.append(NewsFunc(data, 'red')); //передали другой модификатор, теперь он не 000 а red
+
+
+    // Это не очень удобно слздаавать компоненты при помощи функций
+
+
+</script>
+<script>
+    // В ООП класс это такой расшираемый шаблон кода  для создания объектов, которые устнавливают в них начальное занчение т.е совйтсва и реализует повдеине те методы
+    // классы это коснтурктоы из них создаются какие то объекыт
+
+
+    class News {
+
+        constructor(num) { //можем принять в качестве аргумента
+            // тут пишет что должно происходит в самом начале свойства, методы, вызовы...
+            // мы имеем доступ к this везде
+            // this.a = 1
+            // this.b = 2
+            this.a = num
+        }
+
+        //можем объявлять методы внутри класса, которые будут потом у каждого объекта. Вызываются через прототип
+        test() {
+            console.log('this.a:', this.a);
+            // this.test2()
+        }
+
+        // test2() {
+        //     this.test()
+        // }
+
+    }
+
+    let newsComponent = new News(5);//передали числа
+    let newsComponent2 = new News(7);//передали числа
+
+
+    //обищй лксс из которого создаыне эти объекты но они асболютно разные
+    console.log('newsComponent', newsComponent) //News {a: 1, b: 2, с: 5}
+    console.log('newsComponent2', newsComponent2) //News {a: 1, b: 2, с: 7}
+    console.log('newsComponent=', newsComponent === newsComponent2) //newsComponent= false не равны друг другу
+
+    newsComponent.test();
+    newsComponent2.test();
+</script>
+
+
+<script>
+    // переделаем наш компонет новостей на класс
+    class RealNews {
+        constructor(realNewsData) {
+            this.realNewsData = realNewsData
+        }
+
+        render() {
+
+        }
+    }
+</script>
+
+
+</body>
+</html>

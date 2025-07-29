@@ -21,16 +21,16 @@ let testName = 'Ruslan'; // объявим переменную
 let role = 'artist';
 
 let user1 = {
-  testName, // используем переменную — имя свойства берётся из названия переменной
-  firstName: 'John',
-  lastName: 'Doe',
-  // last Name: 'Doe', // ошибка — нельзя использовать пробел без кавычек
-  'last Name': 'Doe', // можно использовать, но только с кавычками и доступом через скобочную нотацию
-  age: 5,
-  [role]: true, // имя свойства берётся из значения переменной
-  address: {
-    street: 'улица Ленина'
-  },
+    testName, // используем переменную — имя свойства берётся из названия переменной
+    firstName: 'John',
+    lastName: 'Doe',
+    // last Name: 'Doe', // ошибка — нельзя использовать пробел без кавычек
+    'last Name': 'Doe', // можно использовать, но только с кавычками и доступом через скобочную нотацию
+    age: 5,
+    [role]: true, // имя свойства берётся из значения переменной
+    address: {
+        street: 'улица Ленина'
+    },
 };
 
 console.log(user1);
@@ -54,17 +54,17 @@ delete user1.artist;
 console.log(user1);
 
 let user2 = {
-  firstName: 'Michael',
-  lastName: 'Washington',
+    firstName: 'Michael',
+    lastName: 'Washington',
 };
 
 console.log(user2);
 
 let user3 = {
-  firstName: 'Leo',
-  lastName: 'Tomson',
-  [user1]: 'Друг', // [object Object]
-  [user2]: 'Враг', // [object Object] — именно так и запишется
+    firstName: 'Leo',
+    lastName: 'Tomson',
+    [user1]: 'Друг', // [object Object]
+    [user2]: 'Враг', // [object Object] — именно так и запишется
 };
 
 console.log(user3);
@@ -76,13 +76,13 @@ console.log({a: 1}.toString()); // '[object Object]'
 // выведем свойства
 // используем for...in — его лучше применять только к объектам, не к массивам
 for (let k in user3) {
-  console.log('k:', k);
-  console.log('user3[k]:', user3[k]);
+    console.log('k:', k);
+    console.log('user3[k]:', user3[k]);
 }
 
 // через in можно проверить наличие ключа в объекте
 let obj1 = {
-  a: 0,
+    a: 0,
 };
 
 console.log(obj1);
@@ -90,11 +90,11 @@ console.log(obj1);
 // проверим, не пустой ли объект (в плане значений)
 
 if (obj1.a) {
-  console.log('объект не пустой 1'); // не увидим, так как проверяется значение, а 0 — это falsy
+    console.log('объект не пустой 1'); // не увидим, так как проверяется значение, а 0 — это falsy
 }
 
 if ('a' in obj1) {
-  console.log('объект не пустой 2'); // увидим, так как in проверяет наличие ключа
+    console.log('объект не пустой 2'); // увидим, так как in проверяет наличие ключа
 }
 
 // передача по ссылке и примитивы
@@ -130,13 +130,13 @@ console.log(o3 === o1); // true — потому что o3 и o1 ссылают�
 
 // Копирование объекта
 let user5 = {
-  firstName: 'maxim',
-  lastName: 'galkin',
+    firstName: 'maxim',
+    lastName: 'galkin',
 };
 
 let user5Address = {
-  street: 'Lenina',
-  role: 'artist'
+    street: 'Lenina',
+    role: 'artist'
 };
 
 // метод
@@ -152,16 +152,16 @@ console.log('newUser', newUser); // скопированы свойства
 // Опциональная цепочка (optional chaining)
 
 let user6 = {
-  firstName: 'maxim',
-  lastName: 'galkin',
-  address: {
-    street: 'улица Ленина'
-  },
+    firstName: 'maxim',
+    lastName: 'galkin',
+    address: {
+        street: 'улица Ленина'
+    },
 };
 
 let user7 = {
-  firstName: 'Filipp',
-  lastName: 'Borbo',
+    firstName: 'Filipp',
+    lastName: 'Borbo',
 };
 
 console.log(user6.address.street); // 'улица Ленина'
@@ -191,17 +191,17 @@ console.log(b4); // { a: 7 }
 // Функция, которая является свойством объекта
 
 let user9 = {
-  firstName: 'Filipp',
-  lastName: 'Borbo',
+    firstName: 'Filipp',
+    lastName: 'Borbo',
 
-  // fullName: function () {
-  //   console.log('this', this);
-  //   console.log(this.firstName, this.lastName);
-  // }
+    // fullName: function () {
+    //   console.log('this', this);
+    //   console.log(this.firstName, this.lastName);
+    // }
 
-  fullName() {
-    console.log(this.firstName, this.lastName);
-  }
+    fullName() {
+        console.log(this.firstName, this.lastName);
+    }
 };
 
 // user8.fullName(); // ReferenceError: user8 is not defined
@@ -212,13 +212,13 @@ user9.fullName(); // 'Filipp Borbo'
 // В стрелочных функциях нет собственного this
 
 function fullName() {
-  console.log(this.firstName, this.lastName);
+    console.log(this.firstName, this.lastName);
 }
 
 let user10 = {
-  firstName: 'a',
-  lastName: 'b',
-  fullName
+    firstName: 'a',
+    lastName: 'b',
+    fullName
 };
 
 user9.fullName(); // 'Filipp Borbo'

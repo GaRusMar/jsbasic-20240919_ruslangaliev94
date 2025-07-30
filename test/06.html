@@ -6,100 +6,265 @@
 </head>
 <body>
 
-
 <script>
-    // представим что данные приходят с сервера
+    // Представим, что данные приходят с сервера
     let data = [
-        {
-            id: 1,
-            title: 'Новость 1',
-        },
-        {
-            id: 2,
-            title: 'Новость 2',
-        },
-        {
-            id: 3,
-            title: 'Новость 3',
-        }
+        {id: 1, title: 'Новость 1'},
+        {id: 2, title: 'Новость 2'},
+        {id: 3, title: 'Новость 3'}
     ];
 
+    let dataRealNews = [
+        {id: 1, title: 'Новость one'},
+        {id: 2, title: 'Новость two'},
+        {id: 3, title: 'Новость three'}
+    ];
 
-    // создам фкнцию которая преобразует компонет рендера
-    // раньше когда испоьзовали компонетный подход через функции new писали this а сейчас ипользуем классы
+    // Создаём функцию, которая преобразует компонент рендера.
+    // Раньше при компонентном подходе через функции new писали this,
+    // а сейчас используем классы. Но пока сделаем на функции.
 
-    function NewsFunc(newsData, color = '#000') { //принято с большой буквы сюда поподает массив объектов через аргумент newsData
+    function NewsFunc(newsData, color = '#000') {
+        // Принято писать с большой буквы (как компонент)
+        // Сюда попадает массив объектов через аргумент newsData
         let list = document.createElement('UL');
-        list.insertAdjacentHTML('beforeend', newsData.map(({id, title}) => `<li data-id="${id}" style="${color}">${title}</li>`));
+        // Превратим массив в HTML-строку и вставим в UL
+        list.insertAdjacentHTML(
+            'beforeend',
+            newsData.map(({id, title}) => `<li data-id="${id}" style="color:${color}">${title}</li>`).join('')
+        );
         return list;
     }
 
-    // в этой переменно у нас UL который мы вернули
+    // В этой переменной у нас готовый <ul>, который вернула функция
     let newsFuncComponent = NewsFunc(data);
 
-    //И теперь вставим его на страницу
+    // Вставляем его на страницу
     document.body.append(newsFuncComponent);
-    document.body.append(NewsFunc(data, 'red')); //передали другой модификатор, теперь он не 000 а red
 
+    // Можно вызвать напрямую и передать другой цвет
+    document.body.append(NewsFunc(data, 'red'));
 
-    // Это не очень удобно слздаавать компоненты при помощи функций
-
+    // ❗ Минус — неудобно создавать полноценные компоненты с логикой через функции
 
 </script>
-<script>
-    // В ООП класс это такой расшираемый шаблон кода  для создания объектов, которые устнавливают в них начальное занчение т.е совйтсва и реализует повдеине те методы
-    // классы это коснтурктоы из них создаются какие то объекыт
 
+<script>
+    // В ООП класс — это расширяемый шаблон кода для создания объектов.
+    // Он задаёт начальные значения (свойства) и реализует поведение (методы).
+    // Классы — это конструкторы, из которых создаются объекты.
 
     class News {
-
-        constructor(num) { //можем принять в качестве аргумента
-            // тут пишет что должно происходит в самом начале свойства, методы, вызовы...
-            // мы имеем доступ к this везде
-            // this.a = 1
-            // this.b = 2
-            this.a = num
+        constructor(num) {
+            // Конструктор вызывается при создании объекта через new
+            // Здесь можно сразу задавать свойства
+            this.a = num;
         }
 
-        //можем объявлять методы внутри класса, которые будут потом у каждого объекта. Вызываются через прототип
+        // Объявляем метод внутри класса (через прототип)
         test() {
             console.log('this.a:', this.a);
-            // this.test2()
         }
 
         // test2() {
-        //     this.test()
+        //     this.test();
         // }
-
     }
 
-    let newsComponent = new News(5);//передали числа
-    let newsComponent2 = new News(7);//передали числа
+    // Создадим несколько объектов из одного класса
+    let newsComponent = new News(5);
+    let newsComponent2 = new News(7);
 
-
-    //обищй лксс из которого создаыне эти объекты но они асболютно разные
-    console.log('newsComponent', newsComponent) //News {a: 1, b: 2, с: 5}
-    console.log('newsComponent2', newsComponent2) //News {a: 1, b: 2, с: 7}
-    console.log('newsComponent=', newsComponent === newsComponent2) //newsComponent= false не равны друг другу
+    console.log('newsComponent', newsComponent);
+    console.log('newsComponent2', newsComponent2);
+    console.log('newsComponent === newsComponent2', newsComponent === newsComponent2); // false (разные объекты)
 
     newsComponent.test();
     newsComponent2.test();
 </script>
 
-
 <script>
-    // переделаем наш компонет новостей на класс
+    // Переделаем компонент новостей на класс
     class RealNews {
         constructor(realNewsData) {
-            this.realNewsData = realNewsData
+            this.realNewsData = realNewsData;
+            // При создании сразу вызываем render, чтобы сгенерировать DOM-элемент
+            this.render();
         }
 
+        // Метод отрисовки элемента
         render() {
+            this.elem = document.createElement('UL');
+            this.elem.insertAdjacentHTML(
+                'beforeend',
+                this.realNewsData.map(({id, title}) => `<li data-id="${id}">${title}</li>`).join('')
+            );
+            // Добавляем обработчик клика
+            this.elem.addEventListener('click', this.onClick);
+            return this.elem;
+        }
 
+        // Метод для обработки кликов по li
+        onClick(e) {
+            let li = e.target.closest('li');
+            if (li) {
+                li.style.textDecoration = 'line-through';
+            }
         }
     }
+
+    // Создаём экземпляр класса
+    let realNewsComponent = new RealNews(dataRealNews);
+
+    // Компонент сразу отрендерился в конструкторе
+    document.body.append(realNewsComponent.elem);
+</script>
+
+<script>
+    // Классы можно использовать не только для компонентов, но и для разделения функциональности
+
+    class User {
+        constructor(firstName, lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        read() {
+            console.log(this.firstName, this.lastName, 'может читать новости');
+        }
+    }
+
+    let user = new User('Filipp', 'Kirkorov');
+    user.read();
+
+    // Наследование классов
+    class Moderator extends User {
+        edit() {
+            console.log(this.firstName, this.lastName, 'может редактировать новости');
+        }
+    }
+
+    let moderator = new Moderator('Maxim', 'Galkin');
+    moderator.read();
+    moderator.edit();
+
+    class Admin extends Moderator {
+        all() {
+            console.log(this.firstName, this.lastName, 'может всё');
+        }
+    }
+
+    let admin = new Admin('Ruslan', 'G');
+    admin.read();
+    admin.edit();
+    admin.all();
 </script>
 
 
+<script>
+    // отделение внешнего интерфейса от внутреннего называется инкапсуляция
+    // добавим кастома
+
+    class CoffeMachine {
+        // привтное свойтво
+        #power;
+
+        constructor(power, waterAmount) {
+
+            // добавим проверкиЮ чтобы не спалить машину
+            // if (power > 3000) {
+            //     power = 3000;
+            // } //убрали провреку, так как есть проверка уже в сеттере
+            // this._power = power; //раньше, когда не было привтных свойтв была договренность что нижнее подчеркывание
+            // this.power = power;
+            // this.#power = power;//используем теперь привтное свойство
+            this.power = power; //и оставляем так так как у же в сеетрее все есть
+            this.waterAmount = waterAmount
+            this.render() // отрисовываем кнопочку
+        }
+
+        // установим сеттеры set далее имя всеводйство и записывается как метод
+        //внутри сеттера делаем дполонительные провреки
+        // и тут можем изменить привтное свойство
+        set power(value) {
+            if (value > 3000) {
+                value = 3000;
+            } else if (value < 500) {
+                value = 500;
+            }
+            this.#power = value
+
+            //#power  и просто power ничего общего не имеют
+        }
+
+        //выозовется когда пользователь попытается прочитать свойство с именем power
+        //Он на чтение свойство
+        get power() {
+            return `Мощность машны ${this.#power}`
+        }
+
+        #start = () => { //странная запись надо пояснить
+            // console.log('Кофе будет готов через', this.waterAmount / this.power * 1000, 'мин');
+            console.log('Кофе будет готов через', this.waterAmount / this.#power * 1000, 'мин'); //используем теперь привтное свойство
+
+            setTimeout(() => {
+                let ce = new CustomEvent('coffe', {
+                    bubbles: true,
+                });
+                this.elem.dispatchEvent(ce);
+            }, this.waterAmount / this.#power * 1000 * 1000)
+        }
+
+        render() {
+            this.elem = document.createElement('BUTTON');
+            this.elem.textContent = 'СВАРИТЬ КОФЕ';
+            this.elem.onclick = this.#start
+        }
+
+
+    }
+
+
+    // и теперь создадим кофемашину из нашего класса
+    let coffeMachine = new CoffeMachine(3000, 3);
+    // coffeMachine.start();
+    console.log(coffeMachine.power)
+
+    // взломаем, пожэтмоу надо использваоть    привтаные свойства - недоступны за пределами класса. Внутри объекта мы прочитать это свойтсво не можем, но внутри класса пожалуйста
+    // coffeMachine.#power = 500000 //Uncaught SyntaxError: Private field '#power' must be declared in an enclosing class
+
+
+    coffeMachine.power = 1000
+    // coffeMachine.start();
+    console.log(coffeMachine.power)
+
+
+    document.body.append(coffeMachine.elem)
+    coffeMachine.elem.addEventListener('coffe', () => {
+        alert('coffe done!')
+    })  //подписались на космтное соыбтие
+
+</script>
+
+<!--кастомные свойства-->
+
+<button class="btn1" data-product="Бананы">Добавить в корзину: Бананы</button>
+
+<script>
+    let btn1 = document.querySelector('.btn1');
+
+    btn1.addEventListener('click', ev => {
+        let ce = new CustomEvent('product-add', {
+            // второй аргумент пердается объукт
+            bubbles: true,//вспылытие
+            detail: btn1.dataset.product, //только через detail можем передать
+        });
+        btn1.dispatchEvent(ce);//задиспачили
+    });
+
+    btn1.addEventListener('product-add', (ev) => {
+        console.log('Товар добавлен в коризину', ev.detail)
+    })
+</script>
 </body>
 </html>

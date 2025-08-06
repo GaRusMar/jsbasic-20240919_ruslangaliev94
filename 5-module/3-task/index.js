@@ -28,6 +28,7 @@ function initCarousel() {
         updateArrows()
     });
 
+
     function updateArrows() {
         if (currentSlideIndex === 0) {
             arrowLeft.style.display = 'none'

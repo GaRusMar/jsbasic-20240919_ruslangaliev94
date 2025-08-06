@@ -1,61 +1,45 @@
 function initCarousel() {
-
-  let arowLeft = document.querySelector('.carousel__arrow_left');
-  let arowRight = document.querySelector('.carousel__arrow_right');
-  let carouselInner = document.querySelector('.carousel__inner');
-  let carouselSlide = document.querySelectorAll('.carousel__slide');
-
-  let currentSlide = 0;
-  let carouselWidth = carouselInner.offsetWidth;
+    let arrowLeft = document.querySelector('.carousel__arrow_left');
+    let arrowRight = document.querySelector('.carousel__arrow_right');
+    let carouselInner = document.querySelector('.carousel__inner');
+    let carouselSlide = document.querySelectorAll('.carousel__slide');
 
 
-  let carousel = document.querySelector('.carousel');
+    let currentOffset = 0;
+    let currentSlideIndex = 0;
+    let slideWidth = carouselInner.offsetWidth;
+    arrowLeft.style.display = 'none';
 
+    arrowRight.addEventListener('click', function () {
+        if (currentSlideIndex < carouselSlide.length - 1) {
+            currentSlideIndex++
+            currentOffset -= slideWidth;
+            carouselInner.style.transform = `translateX(${currentOffset}px)`;
+        }
+        updateArrows()
+    });
 
-  arowLeft.style.display = 'none';
+    arrowLeft.addEventListener('click', function () {
+        if (currentSlideIndex > 0) {
+            currentSlideIndex--
+            currentOffset += slideWidth;
+            carouselInner.style.transform = `translateX(${currentOffset}px)`;
+        }
+        updateArrows()
+    });
 
-
-  carousel.addEventListener('click', (e) => {
-    if (e.target.classList.contains('carousel__arrow_left')) {
-      console.log('клик лево');
-      currentSlide--;
-
-
-      console.log(currentSlide * carouselWidth);
-
-      carouselInner.style.transform = `translateX(${-currentSlide * carouselWidth}px)`;
-
-
-      if (currentSlide <= 0) {
-        arowLeft.style.display = 'none';
-      } else {
-        arowLeft.style.display = 'block';
-      }
-
-
-      if (currentSlide < carouselSlide.length - 1) {
-        arowRight.style.display = 'block';
-      }
-
-
-    } else if (e.target.classList.contains('carousel__arrow_right')) {
-      console.log('клик право');
-      currentSlide++;
-
-      carouselInner.style.transform = `translateX(${-currentSlide * carouselWidth}px)`;
-
-      if (currentSlide >= carouselSlide.length - 1) {
-        arowRight.style.display = 'none';
-      } else {
-        arowRight.style.display = 'block';
-      }
-      if (currentSlide > 0) {
-        arowLeft.style.display = 'block';
-      }
+    function updateArrows() {
+        if (currentSlideIndex === 0) {
+            arrowLeft.style.display = 'none'
+        } else {
+            arrowLeft.style.display = ''
+        }
+        if (currentSlideIndex === carouselSlide.length - 1) {
+            arrowRight.style.display = 'none'
+        } else {
+            arrowRight.style.display = ''
+        }
     }
-
-    console.log(currentSlide);
-    console.log(carouselWidth);
-
-  });
 }
+
+initCarousel(); // после того, как эта функция выполнится, в карусели должны начать переключаться слайды

@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Компоненты JavaScript</title>
 </head>
 <body>
@@ -16,22 +16,22 @@
 
     // Представим, что данные приходят с сервера
     let data = [
-        { id: 1, title: 'Новость 1' },
-        { id: 2, title: 'Новость 2' },
-        { id: 3, title: 'Новость 3' }
+        {id: 1, title: 'Новость 1'},
+        {id: 2, title: 'Новость 2'},
+        {id: 3, title: 'Новость 3'}
     ];
 
     // Создаём функцию, которая создаёт DOM-узел UL с элементами LI
     // Можно передать цвет текста по умолчанию чёрный
     function NewsFunc(newsData, color = '#000') {
-        // Создаём ul элемент
+        // Создаём ul элементка
         let list = document.createElement('ul');
 
         // Преобразуем массив новостей в HTML-строку li с данными и стилями
         list.insertAdjacentHTML(
             'beforeend',
             newsData
-                .map(({ id, title }) => `<li data-id="${id}" style="color:${color}">${title}</li>`)
+                .map(({id, title}) => `<li data-id="${id}" style="color:${color}">${title}</li>`)
                 .join('')
         );
 
@@ -82,9 +82,9 @@
     // === Класс-компонент новостей с рендером и обработкой событий ===
 
     let dataRealNews = [
-        { id: 1, title: 'Новость one' },
-        { id: 2, title: 'Новость two' },
-        { id: 3, title: 'Новость three' }
+        {id: 1, title: 'Новость one'},
+        {id: 2, title: 'Новость two'},
+        {id: 3, title: 'Новость three'}
     ];
 
     class RealNews {
@@ -98,7 +98,7 @@
             this.elem.insertAdjacentHTML(
                 'beforeend',
                 this.realNewsData
-                    .map(({ id, title }) => `<li data-id="${id}">${title}</li>`)
+                    .map(({id, title}) => `<li data-id="${id}">${title}</li>`)
                     .join('')
             );
 
@@ -203,7 +203,7 @@
 
             // Создаём и диспатчим кастомное событие "coffe" через время
             setTimeout(() => {
-                let ce = new CustomEvent('coffe', { bubbles: true });
+                let ce = new CustomEvent('coffe', {bubbles: true});
                 this.elem.dispatchEvent(ce);
             }, (this.waterAmount / this.#power) * 1000 * 1000);
         };
@@ -251,6 +251,125 @@
     btn1.addEventListener('product-add', (ev) => {
         console.log('Товар добавлен в корзину:', ev.detail);
     });
+</script>
+
+
+<!--задачи-->
+<table>
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Возраст</th>
+        <th>Зарплата</th>
+        <th>Город</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+
+    </tr>
+    </tbody>
+</table>
+<script>
+    let rows = [
+        {
+            name: 'Вася',
+            age: 25,
+            salary: 1000,
+            city: 'Самара'
+        },
+        {
+            name: 'Петя',
+            age: 30,
+            salary: 1500,
+            city: 'Москва'
+        }
+    ];
+
+
+    class UserTable {
+        constructor(newsRows) {
+            this.newsRows = newsRows;
+            this.render();
+        }
+
+        render() {
+            let tbody = document.querySelector('tbody');
+
+
+            this.newsRows.forEach(({name, age, salary, city}) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${name}</td>
+                    <td>${age}</td>
+                    <td>${salary}</td>
+                    <td>${city}</td>
+                    <td><button>Удалить</button></td>
+                `;
+                tr.querySelector('button').addEventListener('click', () => {
+                    tr.remove();
+                });
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    new UserTable(rows);
+
+
+    let table = new UserTable(rows);
+    document.body.appendChild(table.elem);
+
+</script>
+
+<!--похожая задачка-->
+<ul id="product-list"></ul>
+
+<script>
+    let products = [
+        {name: 'Хлеб', quantity: 2},
+        {name: 'Молоко', quantity: 1},
+        {name: 'Яблоки', quantity: 5},
+        {name: 'Яйца', quantity: 10}
+    ];
+
+    class ShoppingList {
+        constructor(listProducts) {
+            this.listProducts = listProducts;
+            this.render();
+        }
+
+        render() {
+            let list = document.querySelector('#product-list')
+            this.listProducts.forEach(({name, quantity}) => {
+                let li = document.createElement('li');
+                li.innerHTML = `
+                ${name} ${quantity} <button>Куплено</button>
+                `;
+                let button = li.querySelector('button')
+                button.addEventListener('click', () => {
+                    li.style.textDecoration = "line-through"
+                    button.remove();
+                });
+
+                li.addEventListener('click', (e) => {
+                    if (li.style.textDecoration === 'line-through' && e.target.tagName !== 'BUTTON') {
+                        li.style.textDecoration = ""
+                        li.appendChild(button);
+                    }
+                })
+
+                list.appendChild(li);
+
+            })
+        }
+    }
+
+    new ShoppingList(products);
+
+
 </script>
 
 </body>

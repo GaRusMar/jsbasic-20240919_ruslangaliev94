@@ -159,5 +159,43 @@
     list.insertAdjacentHTML('beforeend', '<li>Арбузик</li>');
 </script>
 
+
+<button class="hide-self-button">Нажмите, чтобы спрятать</button>
+
+
+<script>
+    function hideSelf() {
+        let btn = document.querySelector('.hide-self-button');
+        btn.addEventListener('click', (e) => {
+            e.target.hidden = true;
+        })
+    }
+
+    hideSelf();
+</script>
+
+
+<button class="toggle-text-button">Нажмите, чтобы спрятать/показать текст</button>
+<div id="text">Текст</div>
+
+
+<script>
+    function toggleText() {
+        let btn = document.querySelector('.toggle-text-button');
+        let text = document.querySelector('#text');
+        btn.addEventListener('click', (e) => {
+            if (text.hidden === false) {
+                text.hidden = true;
+            } else {
+                text.hidden = false;
+            }
+        })
+    }
+
+    toggleText();
+
+</script>
+
+
 </body>
 </html>

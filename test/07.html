@@ -6,11 +6,34 @@
 </head>
 <body>
 
+
+<button id="btn1">CLICK TEST</button>
+
 <!--чуть чуть про события-->
-две группы
-простые события
+<!--две группы-->
+
+
+<!--1. простые события-->
+
+<!--mousedown - когда пользователь нажал но не отпустил кнопку мыши-->
+<!--mouseup - когда пользователь отпустил кнопку мыши-->
+<!--mouseover - когда пользователь навел мышь-->
+<!--mouseout - когда пользователь вывел мышь-->
+<!--mousemove - движение мыши-->
+<!--contextmenu - правая кнопка мыши-->
+
+
+<!--2. составные события-->
+<!--click - нажимает кнопку мыши: mousedown + mouseup-->
+<!--dblclick-->
+
 
 <script>
+    let btn1 = document.querySelector('#btn1');
+    btn1.addEventListener('click',event => {
+        console.log('xxx')
+    })
+
 
 </script>
 

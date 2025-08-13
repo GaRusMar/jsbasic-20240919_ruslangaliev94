@@ -7,8 +7,6 @@
 <body>
 
 
-<button id="btn1">CLICK TEST</button>
-
 <!--чуть чуть про события-->
 <!--две группы-->
 
@@ -24,15 +22,36 @@
 
 
 <!--2. составные события-->
-<!--click - нажимает кнопку мыши: mousedown + mouseup-->
+<!--click - нажимает кнопку мыши: mousedown + mouseup + click-->
 <!--dblclick-->
+
+
+<button id="btn1">CLICK TEST</button>
+
+<input id="textfield" type="text">
 
 
 <script>
     let btn1 = document.querySelector('#btn1');
-    btn1.addEventListener('click',event => {
-        console.log('xxx')
+    btn1.addEventListener('click', () => {
+        console.log('CLICK')
     })
+    btn1.addEventListener('mousedown', (event) => {
+        console.log('event.which', event.which) //1 - левая кнопка, 2 средняя кнопка, 3 - правая кнопка
+        console.log('event.altKey', event.altKey) //зажатый alt
+        console.log('event.shiftKey', event.shiftKey) //зажатый shift
+        console.log('event.ctrlKey', event.ctrlKey) //зажатый ctrl
+        console.log('mousedown')
+    })
+    btn1.addEventListener('mouseup', () => {
+        console.log('mouseup')
+    })
+
+
+    let textfield = document.querySelector('#textfield')
+    textfield.addEventListener('keyDown')
+
+    11:31
 
 
 </script>

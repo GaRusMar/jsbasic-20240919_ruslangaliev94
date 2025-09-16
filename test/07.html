@@ -49,12 +49,121 @@
 
 
     let textfield = document.querySelector('#textfield')
-    textfield.addEventListener('keyDown')
+    textfield.addEventListener('keydown', ev => {
+        console.log('event.code:', ev.code)
+        console.log('event.key:', ev.key)
+    })
 
-    11:31
+
+    // DragAndDrop
 
 
 </script>
+
+
+<style>
+
+    .ball {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: green;
+    }
+</style>
+
+
+<div class="ball"></div>
+
+
+<script>
+    //1)mousedown - готовим элемент к перемещению(position:absolute)
+    //2)mousemove - передвигаем элемент на новые координаты путем смены left и top
+    //3)mouseup - остановить процесс переноса и действия, связанные с окончанимем Dnd
+
+
+    let ball = document.querySelector('.ball');
+
+
+    //1 этап
+    //подписываемся на событие можно addEventListener, но мы подпишемся через свойство
+    ball.onpointerdown = function (mousedownEvent) {  //объект события в аргументе
+
+        //убираем сдвиг
+        console.log('clientX;', mousedownEvent.clientX);
+        console.log('clientY;', mousedownEvent.clientY);
+        console.log('rect;', ball.getBoundingClientRect());
+
+
+        let shiftX = mousedownEvent.clientX - ball.getBoundingClientRect().left;
+        let shiftY = mousedownEvent.clientY - ball.getBoundingClientRect().top;
+
+
+        ball.style.position = 'absolute';
+        ball.style.zIndex = '9999';
+
+
+        //2 этап
+        //подписываемся на событие mousemove у документа а не у самого ball потому что если ball то оно пропадет если резко дернем мышкой и событие потеряется
+
+        //создадим функцию отдельно, так как на 3 шаге надо удалить, именно поэтмоу не будет созвать аноноимную функцию
+        function onMousemove(mousemoveEvent) {
+            ball.style.left = mousemoveEvent.pageX - shiftX + 'px'; //меняем координаты. Из объекта события мы будем получать координты, когда двигаем мышкой и получаем координаты по иксу и игрику. Возрващает числа без px а так же центруем курсор по элементу
+            ball.style.top = mousemoveEvent.pageY - shiftY + 'px';
+        }
+
+        document.addEventListener('pointermove', onMousemove);
+        // ball.addEventListener('mousemove', onMousemove);//будет при наведении на сам мячик, а нам надо, чтобы при любом движении в любом месте.
+
+
+        // и 3 шаг подпишемся на mouseUp
+
+        ball.onpointerup = function () {
+            document.removeEventListener('pointermove', onMousemove);
+            ball.onpointerup = null;
+        };
+    }
+
+
+    //Существуют и следующие события для гаджетов и их аналоги
+
+    // PointerEvents API:
+    //pointerdown - mousedown
+    //pointerup - mouseup
+    //pointermove - mousemove
+    //pointerover - mouseover
+    //pointerout - mouseout
+    //pointerenter - mouseenter
+    //pointerleave - mouseleave
+
+
+</script>
+
+
+<!-- регулярные выражения -->
+
+
+<!-- 1 для работы с товарами-->
+ASUS R7-371T-50TF Win10
+ASUS R3-471T-586U Win11
+ASUS V7-572G-52FH Win8
+
+<!--2 для работы с формами-->
+asdasd@gmail.com
+
+
+<!--3 для парсинга данных -->
+<!--сайт объявлений-->
+
+
+<!--4 модерация -->
+
+<script>
+// через литеральное выражение
+let regxp1
+
+
+</script>
+
 
 </body>
 </html>

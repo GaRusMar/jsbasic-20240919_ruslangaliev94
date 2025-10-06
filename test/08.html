@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8"/>
-    <title>Компоненты JavaScript</title>
+  <meta charset="UTF-8"/>
+  <title>Компоненты JavaScript</title>
 </head>
 <body>
+
+
+<span class="loader"></span>
+
 
 <!-- Вкладка Network в DevTools -->
 <!-- Показывает все сетевые запросы, происходящие на странице. -->
@@ -46,23 +50,56 @@
 <!-- Пример формы для практики с httpbin.org -->
 <!-- При отправке GET-запроса на сервер -->
 <form action="https://httpbin.org/get" id="getForm">
-    <button type="submit">Загрузить данные</button>
+  <button type="submit">Загрузить IP address</button>
+  <span id="ip"></span>
 </form>
+
 
 <!-- Работа с событием submit формы -->
 <script>
-    // Получаем элемент формы
-    let getForm = document.getElementById('getForm');
+  // Получаем элемент формы
+  let getForm = document.querySelector('#getForm');
+  let ipEl = document.querySelector('#ip');
 
-    // Подписываемся на событие submit формы
-    // Почему именно на submit, а не на кнопку например. Все просто. В форме могут быть и другие элементы, например штзге
-    getForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // предотвращаем перезагрузку страницы
+  // Подписываемся на событие submit формы
+  // Почему именно на submit, а не на кклик нопку например. Все просто. В форме могут быть и другие элементы, например input  итогда enter по input так же срабоатет submit
+  getForm.addEventListener('submit', ev => {
 
-        // Здесь можно добавить Ajax-запрос
-        console.log('Форма отправлена, но страница не перезагружается');
-    });
+    ev.preventDefault();//отменили submit формы
+
+
+    //AJAX (аякс)
+    //первым аргуентом передается адрес на который требуется выполнить запрос. Он выолпняется асихронно он отправил запрос и ждет ответ.
+    //then - чтобы получить ответ вызывает этот метои а в него передаем функцию калюэк
+    //в функцию будет пердан response от сервера но этоя еще не данные от сервера
+    fetch('https://httpbin.org/get')
+      .then((response) => {
+        console.log('response:', response);
+        // if (!response.ok) {
+        //   alert('ошибка');
+        // }
+        console.log(response.headers.get('content-type')); //application/json
+        //обязательно должны вернуть что то
+        if (response.headers.get('content-type').includes('json')) {
+          return response.json();
+        } else {
+          return response.text();
+        }
+        // получи данные
+        //return response.json(); //если мы знаем что точно приходит json - можно json смело вызывать. Можно определить content-type Он распарсит строку как json и мы полуим готовый объект
+        //return response.text(); // если тектс то не надо выхывать json будет ошибка текст не смодет распрариситься как json.
+        //return response.blob(); //если бинарные данные картинки
+      })
+      .then(data => {
+        console.log('data:', data);
+        ipEl.textContent = data.origin;
+      }); ///в качестве аргумента прнимиаеи данные котоыре нас интересуют второй then вызовет функцию тогда как все данные уже загруженны к нам в сервер
+
+
+  });
 </script>
+
+<!--можем менять скокрось загрузки 4g или 3g-->
 
 </body>
 </html>

@@ -1,82 +1,267 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8"/>
-  <title>Компоненты JavaScript</title>
+    <meta charset="UTF-8"/>
+    <title>Компоненты JavaScript</title>
 </head>
 <body>
 
-<!--вклдка network отображает все сетевые запросы которые происходят на этой странице-->
+<!-- ===============================
+     События в JavaScript
+     =============================== -->
 
-<!--можно отфилтровать что загружается-->
+<!-- События можно условно разделить на две группы -->
 
-<!--по умолчанию all-->
+<!-- 1. Простые события мыши -->
+<!--
+mousedown   — когда пользователь нажал, но не отпустил кнопку мыши
+mouseup     — когда отпустил кнопку мыши
+mouseover   — когда навёл курсор на элемент
+mouseout    — когда вывел курсор с элемента
+mousemove   — движение мыши по элементу
+contextmenu — клик правой кнопкой мыши (открытие контекстного меню)
+-->
 
-<!--hedders - служебная информация которая передается на сервер и с сервера-->
-<!--request headers язык операционка бразуер это отсылет на сервер-->
-<!--response heders - заголовки от сервера content type пришел json-->
-<!--general - базовын данные о запрсое адерс куда был отправлен запрос, метод каоторый использваолься get(обычно у html это get и post а AJAX есть больше методов)-->
-<!--также статус и ip-->
+<!-- 2. Составные события -->
+<!--
+click    — комбинация: mousedown + mouseup
+dblclick — двойной клик мышью
+-->
 
+<button id="btn1">CLICK TEST</button>
+<input id="textfield" type="text">
 
-<!--payload - модем посмттерть что отправляется на свревр с веб старницы что мы отсылалами-->
-
-<!--query string params  ее можно прочитать по разделителю =-->
-<!--и как в payload они более наглядно представленны-->
-
-<!--preview - данные котоыре пришли с сервера но красиво. И как раз здесь видно что пришло с сервера-->
-
-<!--в response показывает именно так как пришло с сервера-->
-
-
-<!--Статусы:-->
-<!--http сервер всегда отвечает каким то статус кодом-->
-<!--200 - 300 - сервер успешно обработал запрос и как то ответил-->
-<!--все сьатумсы просто гугли-->
-
-
-<!--Методы-->
-<!--в html  два get и post-->
-
-<!--get - для загрзуи получения данных с свервера( тоде можем пердать данные)-->
-
-
-<!--post - если нужно передать-->
-
-
-<!--formdata - специальный элемент(или как правильно) в котором записалиь данные из формы и на сатйе они не отображаются и в url не ьудт видно-->
-<!--Т/е авторизоваться методом post - это безопасно-->
-<!--а если get то мы могли увидеть в url - это небезопасно-->
-
-
-<!--переходим к Ajax аякс читается-->
-
-<!--Ajax - асинхроный js xml-->
-<!--Пример перекючение страниц-->
-
-<!--используется в синг пейдж апликатион-->
-
-
-<!--для практики будем испоьзвать httpbin.org-->
-<!--в action указывается адрес куда отрпавялется запрос и метод если get можно не писать он по умолчанию-->
-<!--<form action="https://httpbin.org/image">-->
-<!--  <button type="submit">Загрузить картинку</button>-->
-<!--</form>-->
-
-<!--как сделать чтобы не было перброса на старницу и могли бы остаться на этой же старнце на примере с текстом-->
-<form action="https://httpbin.org/get" id="getForm">
-  <button type="submit">Загрузить данные</button>
-</form>
-
-<!--если мы работает с формой то мы не подписываемя на событие click у формы-->
-<!--Почему? потому что у формы могут быть другие элементы например input-->
 <script>
-  let getForm = document.getElementById('#getForm');
-  getForm.addEventListener('submit', (e) => {
+    let btn1 = document.querySelector('#btn1');
 
-  })
+    // Подписка на простое событие "click"
+    btn1.addEventListener('click', () => {
+        console.log('CLICK');
+    });
+
+    // Событие mousedown — нажата кнопка мыши
+    btn1.addEventListener('mousedown', (event) => {
+        console.log('event.which', event.which); // 1 — левая, 2 — средняя, 3 — правая кнопка
+        console.log('event.altKey', event.altKey);   // Alt был зажат?
+        console.log('event.shiftKey', event.shiftKey); // Shift был зажат?
+        console.log('event.ctrlKey', event.ctrlKey); // Ctrl был зажат?
+        console.log('mousedown');
+    });
+
+    // Событие mouseup — кнопка мыши отпущена
+    btn1.addEventListener('mouseup', () => {
+        console.log('mouseup');
+    });
+
+
+    // Работа с клавиатурой
+    let textfield = document.querySelector('#textfield');
+    textfield.addEventListener('keydown', ev => {
+        console.log('event.code:', ev.code); // Код физической клавиши (например, KeyA, Digit1)
+        console.log('event.key:', ev.key);   // Символ, который будет введён (например, "a", "1")
+    });
+
+    // ===============================
+    // Drag & Drop (перетаскивание)
+    // ===============================
+
 </script>
+
+<style>
+    .ball {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: green;
+        cursor: grab;
+    }
+</style>
+
+<div class="ball"></div>
+
+<script>
+    // Алгоритм Drag & Drop:
+    // 1) mousedown (pointerdown) — готовим элемент к перемещению, задаём position:absolute
+    // 2) mousemove (pointermove) — двигаем элемент, меняя координаты left/top
+    // 3) mouseup (pointerup) — останавливаем процесс переноса
+
+    let ball = document.querySelector('.ball');
+
+    // Шаг 1 — обработка pointerdown
+    ball.onpointerdown = function (mousedownEvent) {
+        // Определяем смещение курсора относительно границ элемента
+        let shiftX = mousedownEvent.clientX - ball.getBoundingClientRect().left;
+        let shiftY = mousedownEvent.clientY - ball.getBoundingClientRect().top;
+
+        ball.style.position = 'absolute';
+        ball.style.zIndex = '9999';
+
+        // Шаг 2 — обработка движения мыши (pointermove)
+        function onMousemove(mousemoveEvent) {
+            ball.style.left = mousemoveEvent.pageX - shiftX + 'px';
+            ball.style.top = mousemoveEvent.pageY - shiftY + 'px';
+        }
+
+        // Важно: подписываемся на document, а не на сам элемент
+        document.addEventListener('pointermove', onMousemove);
+
+        // Шаг 3 — отпускание кнопки мыши (pointerup)
+        ball.onpointerup = function () {
+            document.removeEventListener('pointermove', onMousemove);
+            ball.onpointerup = null; // убираем обработчик, чтобы не висел в памяти
+        };
+    };
+
+    // Pointer Events API — кроссбраузерное объединение событий мыши/пальцев
+    // pointerdown  ≈ mousedown
+    // pointerup    ≈ mouseup
+    // pointermove  ≈ mousemove
+    // pointerover  ≈ mouseover
+    // pointerout   ≈ mouseout
+    // pointerenter ≈ mouseenter
+    // pointerleave ≈ mouseleave
+
+</script>
+
+<!-- ===============================
+     Регулярные выражения
+     =============================== -->
+
+<!-- Применение:
+1) работа с товарами (например, парсинг артикулов)
+2) валидация форм (например, email)
+3) парсинг данных (сайты объявлений)
+4) модерация контента (фильтры слов)
+-->
+
+<script>
+    // Примеры работы с RegExp
+    let str = 'testTest';
+
+    // Поиск слова "test" без учёта регистра, во всём тексте (g — global, i — ignoreCase, m — multiline)
+    let regexp1 = /test/gim;
+
+    // . (точка) — любой символ
+    let regexp2 = /./;    // найдёт первый символ
+    let regexp3 = /./g;   // найдёт все символы
+
+    let str2 = '#a';
+    let regexp4 = /.[a-z]/g;       // найдёт "#a"
+    let regexp6 = /.[a-zа-я]/gi;   // любой символ + буква (латиница или кириллица)
+
+    // Пример: поиск "кроссовок" в разных вариантах написания
+    let text = 'Кроовки очень удобные. В кросссссовках можно бегать. У меня есть много кроcсовок.';
+    // Квантификаторы — это специальные символы в регулярных выражениях (RegExp), которые указывают, сколько раз подряд должен встречаться символ или группа символов.
+    // Квантификаторы:
+    // {2}     — символ встречается ровно 2 раза
+    // {2,3}   — от 2 до 3 раз
+    // {0,}    — от 0 до бесконечности (то же самое, что *)
+    // {1,}    — от 1 до бесконечности (то же самое, что +)
+    // ?       — символ встречается 0 или 1 раз
+
+    let regexp10 = /кро[сc]*ов[киахо]{1,9}/gim;
+
+    console.log(regexp10.test(text));        // проверка: есть совпадение или нет
+    console.log(text.match(regexp10));       // вывод всех совпадений
+    console.log(text.replace(regexp10, '***')); // замена совпадений
+
+    // Этих примеров достаточно для большинства задач с регулярками
+</script>
+
+<!-- ===============================
+     Валидация Email
+     =============================== -->
+
+<hr>
+
+<label>
+    Email:
+    <input id="emailInput" type="text" autocomplete="off">
+</label>
+<br>
+<button id="signupBtn">Sign up</button>
+
+<script>
+    // Задача: пользователь вводит email — нужно проверить корректность
+
+    let emailInput = document.querySelector('#emailInput');
+    let signupBtn = document.querySelector('#signupBtn');
+
+    signupBtn.addEventListener('click', () => {
+        let value = emailInput.value;
+
+        // Простая регулярка для email
+        let emailRegexp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (emailRegexp.test(value)) {
+            alert('Добро пожаловать!');
+        } else {
+            alert('Email невалидный');
+        }
+    });
+
+    // Важно: валидацию email лучше не писать вручную,
+    // а использовать готовые проверенные решения или HTML5 валидацию.
+</script>
+
+<!-- Тип данных у регулярных выражений в JS — это объект RegExp -->
+
 
 </body>
 </html>
 
+<div class="square"></div>
+
+<style>
+    .square {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        cursor: grab;
+    }
+</style>
+
+<script>
+    // Находим квадрат на странице
+    let square = document.querySelector('.square');
+
+    // Подписываемся на событие нажатия кнопки мыши (или касания) на квадрате
+    square.addEventListener('pointerdown', function (event) {
+
+        // Вычисляем смещение курсора внутри квадрата
+        // shiftX — сколько пикселей курсор от левого края квадрата
+        // shiftY — сколько пикселей курсор от верхнего края квадрата
+        let shiftX = event.clientX - square.getBoundingClientRect().left;
+        let shiftY = event.clientY - square.getBoundingClientRect().top;
+
+        // Меняем позиционирование квадрата, чтобы можно было менять left/top
+        square.style.position = 'absolute';
+        // Поднимаем квадрат поверх других элементов
+        square.style.zIndex = '9999';
+
+        // Функция, которая будет перемещать квадрат при движении мыши
+        function onMouseMove(event) {
+            // Меняем координаты квадрата с учётом смещения курсора
+            square.style.left = event.pageX - shiftX + 'px';
+            square.style.top = event.pageY - shiftY + 'px';
+        }
+
+        // Подписываемся на движение мыши по документу
+        // важно на document, чтобы движение продолжалось даже если курсор выйдет за пределы квадрата
+        document.addEventListener('pointermove', onMouseMove);
+
+        // Обработка отпускания кнопки мыши
+        square.onpointerup = function () {
+            // Убираем обработчик движения, чтобы не оставался в памяти
+            document.removeEventListener('pointermove', onMouseMove);
+            // Убираем обработчик pointerup, чтобы не оставался в памяти
+            square.onpointerup = null;
+        };
+
+        // Отключаем стандартное поведение перетаскивания браузера
+        square.ondragstart = function () {
+            return false;
+        };
+    });
+
+</script>

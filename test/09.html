@@ -2,91 +2,203 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8"/>
-    <title>Промиссы</title>
+    <title>Промисы</title>
 </head>
 <body>
 
 <script>
 
-    //функции которая загружает данные для игры
+    // Функция, которая загружает данные для игры
 
-    function loadData(callback) { //    callback - общепринятое название
-        setTimeout(() => {
-            console.log('Данные загрузились');
-            // callback(); //вызвали callback
-            loadImages(callback) // сразу после загрузки данных вызовем сразу загрзуку картинок и пробросим наш callback дальше
-        }, 500);
-    }
+    // function loadData(callback) { // callback — общепринятое название
+    //     setTimeout(() => {
+    //         console.log('Данные загрузились');
+    //         // callback(); // вызвали callback
+    //         loadImages(callback) // сразу после загрузки данных вызываем загрузку картинок и пробрасываем callback дальше
+    //     }, 500);
+    // }
 
-    function loadImages(callback) { // тут тоже будем вызывать callback в качестве аргумента
-        setTimeout(() => {
-            console.log('Картинки загрузились');
-            loadSounds(callback);
-        }, 1000)
-    }
+    // function loadImages(callback) { // тут тоже будем вызывать callback как аргумент
+    //     setTimeout(() => {
+    //         console.log('Картинки загрузились');
+    //         loadSounds(callback);
+    //     }, 1000)
+    // }
 
-    function loadSounds(callback) {
-        setTimeout(() => {
-            console.log('Звуки загрузились')
-            callback(); //проделала долгий путь и только тут вызвалась, но если было много данных, то сложно. Даже есть callback hell ад из колбеков
-        }, 1500)
-    }
+    // function loadSounds(callback) {
+    //     setTimeout(() => {
+    //         console.log('Звуки загрузились');
+    //         callback(); // прошёл долгий путь и только тут вызвался. Но если бы было много функций, это стало бы сложно. Такой код называют "callback hell" (ад из колбэков).
+    //     }, 1500)
+    // }
 
-    //основая функция которая должна вызываться после того как все остальные функции загрузились
-    function startGame(callback) {
-        console.log('Игра началась')
-    }
+    // Основная функция, которая должна вызываться после того, как все загрузки завершились
+    // function startGame(callback) {
+    //     console.log('Игра началась');
+    // }
 
-    //до промиосв решшали такие задачи с помощью callback функций, например есть бибилотека асинк
-    // loadData(startGame) //startGame прошла через две функции loadData и loadImages
+    // До появления промисов такие задачи решали с помощью callback-функций.
+    // Например, есть библиотека async для работы с ними.
+    // loadData(startGame) // startGame прошёл через две функции: loadData и loadImages
 
-
-    // Сейчас проблема, что каждая загрузка данных, ждем предыдущей загрузки данных из за колбеков, лучше выполнить эти функции параллельно поэтому перепием на промисы
-    // надо уяснить, потмоу что в совремнном JS все крутится вокруг промисов
+    // Проблема: каждая загрузка ждёт завершения предыдущей из-за колбэков.
+    // Лучше выполнить эти функции параллельно, поэтому перепишем на промисы.
+    // Это важно уяснить, потому что в современном JS всё крутится вокруг промисов.
 
 </script>
 
 <script>
-    // Промис - это специлаьный объект в JS у которого есть какое то внутренее состояние, в котром он гаходится
-    // есть три состояния(напиши какие). Есть и методы которые повзоляют по цепочке передевать упарвление следущем функциям
+    // Промис — это специальный объект в JS, у которого есть внутреннее состояние.
+    // Состояния бывают три: pending (ожидание), fulfilled (успешно), rejected (ошибка).
+    // Есть методы, которые позволяют по цепочке передавать управление следующим функциям.
 
-    let pr = new Promise((resolve) => { //в промис передаем функцию. Функция в качевте аргумента принимает другую функцию например resolve - это просто аргумент который ссылается на функцию
-        //можно писать любой асинхроный код
+    // let pr = new Promise((resolve) => {
+    //     // в конструктор передаем функцию. Она принимает аргументы, например resolve — это функция, которую мы вызываем по завершении.
+    //
+    //     setTimeout(() => {
+    //         console.log('Асинхронный код 1');
+    //         resolve(); // сигнал промису, что асинхронный код завершился
+    //     }, 1000);
+    // })
+    //
+    // // По аналогии с fetch: fetch возвращает промис, поэтому у него есть метод then
+    // pr
+    //     .then(() => {
+    //         // console.log('Код 2'); // выполнится только после resolve
+    //
+    //         // Цепочка может сломаться, если внутри есть асинхронный код.
+    //         // Тогда мы должны вернуть новый промис:
+    //
+    //         return new Promise(resolve => {
+    //             setTimeout(() => {
+    //                 console.log('Код 2');
+    //                 resolve(); // важное условие — обязательно вызвать resolve!
+    //             }, 500);
+    //         })
+    //     })
+    //     .then(() => {
+    //         console.log('Код 3');
+    //     })
+    //
+    // console.log(pr);
 
-        setTimeout(() => {
-            console.log('Асинхронный код 1');
-            resolve(); //сигнал промису, что асинхроный код завершился
-        }, 1000);
-    })
-    //по анлогии с fetch, fetch возваращет промис поэтмоу у нее так же есть метод then
-    // в then мы можем предать функцию
-    pr
-        // эти функции then являются простыми и синхронными
-        .then(() => {
-            // console.log('Код 2') // это получится только когда у pr будет состояние  resolve(); //сигнал промису, что асинхроный код завершился
+</script>
 
-            //цепочка немного сломается, потому что then не знает что внутри него есть асинхроный код, но мы можем сказать then чтобы он ждал
-            // setTimeout(() => {
-            //     console.log('Код 2');
-            // }, 500);
+<script>
 
-            //поэтмоу пишем promise
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    console.log('Код 2');
-                    resolve() //важное условие! что мы закончили!
-                }, 500);
-            })
+    // Перепишем функции с помощью Promise и избавимся от callback.
+    // Итог: код читается лучше. Если нужно добавить ещё одну функцию, достаточно, чтобы она возвращала промис, и мы вставим её в цепочку.
+    // Callback hell больше нет.
+    // Но проблема последовательного ожидания остаётся.
 
-
+    function loadData(callback) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                console.log('Данные загрузились');
+                resolve('Филипп играет в игру');
+                // В resolve можно передавать только один аргумент.
+                // Если нужно несколько — передаём массив или объект.
+                // resolve(['Филипп играет в игру', 'Алла Пугачёва играет в игру']);
+            }, 500);
         })
-        .then(() => {
-            console.log('Код 3')
+    }
+
+    function loadImages(callback) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                console.log('Картинки загрузились');
+                resolve(['Картинка 1', 'Картинка 2']);
+            }, 1000)
         })
-    console.log(pr)
+    }
+
+    function loadSounds(callback) {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                console.log('Звуки загрузились');
+                resolve(['Звук 1', 'Звук 2']);
+            }, 1500)
+        })
+    }
+
+    function startGame(callback) {
+        console.log('Игра началась');
+    }
+
+    // Пример последовательного вызова
+    // loadData()
+    //     .then(loadImages)
+    //     .then(loadSounds)
+    //     .then(startGame);
+
+    // Пример параллельной загрузки
+    // Promise.all одновременно вызывает все функции и ждёт, пока они завершатся.
+    // Если хотя бы один промис завершится с ошибкой, then не выполнится.
+    // Promise
+    //     .all([loadData(), loadImages(), loadSounds()])
+    //     .then(startGame);
+
+    // Promise.race ждёт только первый зарезолвившийся промис.
+    // Promise
+    //     .race([loadData(), loadImages(), loadSounds()])
+    //     .then(startGame);
+
+    // Пример с погодой для race:
+    // Promise
+    //     .race([pogodaYandex(), pogodaGoogle(), pogodaGisMeteo()])
+    //     .then(showGame);
+
+</script>
+
+<script>
+
+    // Асинхронные функции — это синтаксический сахар над промисами.
+    // Любая async-функция всегда возвращает промис.
+
+    async function game() {
+        // await loadData();
+        // await loadImages();
+        // await loadSounds();
+        // startGame(); // синхронная функция — можно без await
+
+        // Но снова всё выполняется последовательно.
+        // Поэтому используем Promise.all:
+        // await Promise.all([loadData(), loadImages(), loadSounds()]);
+        // startGame();
+
+        // Пример с fetch
+        // let response = await fetch('https://httpbin.org/get');
+        // let data = await response.json();
+        // console.log('IP:', data.origin);
+
+        // Вернёмся к нашей игре:
+        // let userData = await loadData();
+        // console.log('userData:', userData);
+        //
+        // let images = await loadImages();
+        // console.log('images:', images);
+        //
+        // let sounds = await loadSounds();
+        // console.log('sounds:', sounds);
+
+        // Через Promise.all:
+        let [userData, images, sounds] = await Promise.all([loadData(), loadImages(), loadSounds()]);
+        console.log('userData:', userData);
+        console.log('images:', images);
+        console.log('sounds:', sounds);
+
+        startGame();
+    }
+
+    game();
+
+    // console.log(game()); // вызов async-функции всегда возвращает промис
+
+    // async позволяет внутри функции использовать await.
+    // Можно писать и стрелочные async-функции:
+    // let f = async () => {}
+
 </script>
 
 </body>
 </html>
-
-29:27
